@@ -1,11 +1,34 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+// import { StatusBar } from 'expo-status-bar';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { useEffect } from 'react';
+import * as SplashScreen from 'expo-splash-screen';
+import * as Font from 'expo-font';
+
+SplashScreen.preventAutoHideAsync(); // Keep the splash screen visible while we fetch resources
 
 export default function App() {
+
+  const [fontsloaded] = Font.useFonts({
+    'roboto-regular': require('./assets/fonts/Roboto-Regular.ttf'),
+    'roboto-bold': require('./assets/fonts/Roboto-Bold.ttf'),
+    'roboto-medium': require('./assets/fonts/Roboto-Medium.ttf'),
+  });
+
+  useEffect(() => {
+    if (fontsloaded) {
+      SplashScreen.hideAsync(); // Hide the splash screen after font loading
+    }
+  }, [fontsloaded]);
+
+  if (!fontsloaded) {
+    return <ActivityIndicator />; // Show a loading indicator while fonts are loading
+  }
+
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <Text style={styles.text}>Open up App.tsx to start working on your app!</Text>
+      {/* <StatusBar style="auto" /> */}  
     </View>
   );
 }
@@ -17,4 +40,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  text: {
+    color: 'blue'
+  }
 });

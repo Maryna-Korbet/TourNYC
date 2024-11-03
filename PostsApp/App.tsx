@@ -1,5 +1,11 @@
-// import { StatusBar } from 'expo-status-bar';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+} from 'react-native';
 import { useEffect } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
@@ -27,8 +33,11 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Open up App.tsx to start working on your app!</Text>
-      {/* <StatusBar style="auto" /> */}  
+      <Image
+          style={styles.image}
+          source={require('./assets/images/background/background-photo.jpg')}
+        />
+      <StatusBar style="auto" /> 
     </View>
   );
 }
@@ -40,7 +49,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  text: {
-    color: 'blue'
-  }
+  image: {
+    resizeMode: 'cover',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
 });
+

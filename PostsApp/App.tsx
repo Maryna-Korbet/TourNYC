@@ -27,7 +27,7 @@ export default function App() {
   }, [fontsloaded]);
 
   if (!fontsloaded) {
-    return <ActivityIndicator />; // Show a loading indicator while fonts are loading
+    return <ActivityIndicator size={"large"} color={"#FF6C00"}/>; // Show a loading indicator while fonts are loading
   }
 
 

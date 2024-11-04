@@ -15,9 +15,10 @@ SplashScreen.preventAutoHideAsync(); // Keep the splash screen visible while we 
 export default function App() {
 
   const [fontsloaded] = Font.useFonts({
-    'roboto-regular': require('./assets/fonts/Roboto-Regular.ttf'),
-    'roboto-bold': require('./assets/fonts/Roboto-Bold.ttf'),
-    'roboto-medium': require('./assets/fonts/Roboto-Medium.ttf'),
+    'Roboto-Regular': require('./assets/fonts/Roboto-Regular.ttf'),
+    'Roboto-Bold': require('./assets/fonts/Roboto-Bold.ttf'),
+    'Roboto-Medium': require('./assets/fonts/Roboto-Medium.ttf'),
+    'Roboto-Light': require('./assets/fonts/Roboto-Light.ttf'),
   });
 
   useEffect(() => {

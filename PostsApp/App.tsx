@@ -9,8 +9,8 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 
 import { colors } from './styles/GlobalStyles';
-import RegistrationScreen  from './screens/AuthScreens/RegistrationScreens/RegistrationScreen';
-
+// import RegistrationScreen  from './screens/AuthScreens/RegistrationScreens/RegistrationScreen';
+import LoginScreen from './screens/AuthScreens/LoginScreen/LoginScreen';  
 
 SplashScreen.preventAutoHideAsync(); // Keep the splash screen visible while we fetch resources
 
@@ -39,7 +39,8 @@ export default function App() {
         source={require('./assets/images/background/background-photo.jpg')}
         style={styles.background_image}
       >
-          <RegistrationScreen />
+        {/* <RegistrationScreen /> */}
+        <LoginScreen />
         </ImageBackground>
     </View>
   );
@@ -55,8 +56,5 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     height: '100%',
     width: '100%',
-
-    // justifyContent: 'center',
-    // alignItems: 'center',
   },
 })

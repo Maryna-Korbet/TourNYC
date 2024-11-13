@@ -1,0 +1,128 @@
+import { StyleSheet } from 'react-native';
+import { colors } from '../../../styles/GlobalStyles';
+
+export const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'flex-end',
+	},
+	formContainer: {
+		height: '68%',
+		paddingTop: 32,
+		paddingHorizontal: 16,
+		borderTopLeftRadius: 25,
+		borderTopRightRadius: 25,
+		backgroundColor: colors.white,
+	},
+	avatar: {
+		position: 'absolute',
+		zIndex: 1,
+		top: -60,
+		height: 120,
+		width: 120,
+		alignSelf: 'center',
+		alignItems: 'flex-end',
+		justifyContent: 'flex-end',
+		borderWidth: 1,
+		borderColor: 'transparent',
+		backgroundColor: colors.text_gray,
+		borderRadius: 16,
+	},
+	buttonAvatar: {
+		zIndex: 2,
+		top: -14,
+		right: -13,
+		transform: [{ rotate: '45deg' }],
+		height: 25,
+		width: 25,
+		alignItems: 'center',
+		justifyContent: 'center',
+		borderRadius: 25,
+		borderWidth: 1,
+		borderColor: colors.orange,
+		backgroundColor: colors.white,
+	},
+	buttonAvatarText: {
+		color: colors.orange,
+		fontSize: 16,
+	},
+	title: {
+		marginTop: 32,
+		fontSize: 30,
+        fontWeight: "500",
+        lineHeight: 36,
+        letterSpacing: 0.01,
+        textAlign: 'center',
+        color: colors.black,
+        marginBottom: 32,
+	},
+	innerContainer: {
+		width: '100%',
+		gap: 16,
+	},
+	buttonPasswordText: {
+		fontFamily: 'Roboto-Regular',
+		fontSize: 16,
+		lineHeight: 19,
+		color: colors.blue,
+	},
+	buttonForm: {
+		position: 'relative',
+		height: 51,
+		marginTop: 43,
+		justifyContent: 'center',
+		alignItems: 'center',
+		borderRadius: 100,
+		backgroundColor: colors.orange,
+	},
+	buttonFormText: {
+		alignItems: 'center',
+		fontFamily: 'Roboto-Regular',
+		fontSize: 16,
+		lineHeight: 19,
+		color: colors.white,
+	},
+	outerStyles: {
+		flexDirection: 'row',
+        justifyContent: 'space-between',
+	},
+	baseText: {
+        fontFamily: 'Roboto-Regular',
+        fontSize: 16,
+        fontWeight: "400",
+        lineHeight: 18,
+	},
+	show: {
+		color: colors.blue,
+	},
+	buttonsContainer: {
+        width: '100%',
+		gap: 16,
+		marginTop: 43,
+		paddingHorizontal: 16,
+    },
+    button: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    buttonText: {
+        color: colors.white,
+	},
+	signInContainer: {
+        flexDirection: 'row',
+        justifyContent:'center',
+        alignItems: 'center',
+        color: colors.blue,
+        gap: 4,
+    },
+    signInText: {
+        textDecorationLine: 'underline',
+	},
+	background_image: {
+		position: 'absolute',
+		resizeMode: 'cover',
+		height: '100%',
+		width: '100%',
+	},
+});

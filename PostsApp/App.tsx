@@ -1,20 +1,22 @@
-import { StatusBar } from 'expo-status-bar';
+import React, { useEffect } from 'react';
 import {
   ActivityIndicator,
   StyleSheet,
-  Text,
   View,
-  Image,
+  ImageBackground,
 } from 'react-native';
-import { useEffect } from 'react';
+import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import * as Font from 'expo-font';
+
+import { colors } from './styles/GlobalStyles';
+import RegistrationScreen  from './screens/AuthScreens/RegistrationScreens/RegistrationScreen';
+
 
 SplashScreen.preventAutoHideAsync(); // Keep the splash screen visible while we fetch resources
 
 export default function App() {
-
-  const [fontsloaded] = Font.useFonts({
+  
+  const [fontsloaded] = useFonts({
     'Roboto-Regular': require('./assets/fonts/Roboto-Regular.ttf'),
     'Roboto-Bold': require('./assets/fonts/Roboto-Bold.ttf'),
     'Roboto-Medium': require('./assets/fonts/Roboto-Medium.ttf'),
@@ -31,29 +33,30 @@ export default function App() {
     return <ActivityIndicator size={"large"} color={"#FF6C00"}/>; // Show a loading indicator while fonts are loading
   }
 
-
   return (
     <View style={styles.container}>
-      <Image
-          style={styles.image}
-          source={require('./assets/images/background/background-photo.jpg')}
-        />
-      <StatusBar style="auto" /> 
+      <ImageBackground
+        source={require('./assets/images/background/background-photo.jpg')}
+        style={styles.background_image}
+      >
+          <RegistrationScreen />
+        </ImageBackground>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: colors.white,
   },
-  image: {
+  background_image: {
+    position: 'absolute',
     resizeMode: 'cover',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
-});
+    height: '100%',
+    width: '100%',
 
+    // justifyContent: 'center',
+    // alignItems: 'center',
+  },
+})

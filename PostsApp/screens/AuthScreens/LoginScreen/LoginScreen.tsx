@@ -8,6 +8,7 @@ import {
     TouchableWithoutFeedback,
     Keyboard,
     Alert,
+    Image,
 } from 'react-native';
 import { usePasswordToggle } from '../../../hooks/usePasswordToggle';
 import ShowButton from '../../../components/ShowButton';
@@ -81,58 +82,64 @@ const LoginScreen: FC = () => {
 
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-            <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                style={styles.container}
-            >
-                <View style={[styles.formContainer, { width: SCREEN_WIDTH }]}>
-                    <Text style={styles.title}>Sign In</Text>
+            <>
+                <Image
+                    source={require('../../../assets/images/background/background-photo.jpg')}
+                    style={styles.background_image}
+                />
+                <KeyboardAvoidingView
+                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                    style={styles.container}
+                >
+                    <View style={[styles.formContainer, { width: SCREEN_WIDTH }]}>
+                        <Text style={styles.title}>Sign In</Text>
 
-                    <View style={styles.innerContainer}>
-                        <Input
-                            placeholder="Email address"
-                            value={inputQuery.email}
-                            error={error.email}
-                            autofocus={true}
-                            autoCapitalize='none'
-                            onValueChange={(value) => handleValueChange(value, "email")}
-                        />
+                        <View style={styles.innerContainer}>
+                            <Input
+                                placeholder="Email address"
+                                value={inputQuery.email}
+                                error={error.email}
+                                autofocus={true}
+                                autoCapitalize='none'
+                                onValueChange={(value) => handleValueChange(value, "email")}
+                            />
 
-                        <Input
-                            placeholder="Password"
-                            value={inputQuery.password}
-                            error={error.password}
-                            rightButton={<ShowButton togglePasswordVisibility={togglePasswordVisibility} />}
-                            outerStyles={styles.outerStyles}
-                            secureTextEntry={!isPasswordVisible}
-                            autoCapitalize='none'
-                            onValueChange={(value) => handleValueChange(value, "password")}
-                        />
-                    </View>
+                            <Input
+                                placeholder="Password"
+                                value={inputQuery.password}
+                                error={error.password}
+                                rightButton={<ShowButton togglePasswordVisibility={togglePasswordVisibility} />}
+                                outerStyles={styles.outerStyles}
+                                secureTextEntry={!isPasswordVisible}
+                                autoCapitalize='none'
+                                onValueChange={(value) => handleValueChange(value, "password")}
+                            />
+                        </View>
 
-                    <View style={styles.buttonsContainer}>
-                        <Button
-                            buttonStyles={styles.button}
-                            onPress={onLogin}
-                        >
-                            <Text style={[styles.baseText, styles.buttonText]}>
-                                Sign In
-                            </Text>
-                        </Button>
-
-                        <View style={styles.signUpContainer}>
-                            <Text style={styles.baseText}>
-                                Don't have an account?
-                            </Text>
-                            <TouchableWithoutFeedback onPress={onSignUp}>
-                                <Text style={[styles.baseText, styles.signUpText]}>
-                                    Sign up
+                        <View style={styles.buttonsContainer}>
+                            <Button
+                                buttonStyles={styles.button}
+                                onPress={onLogin}
+                            >
+                                <Text style={[styles.baseText, styles.buttonText]}>
+                                    Sign In
                                 </Text>
-                            </TouchableWithoutFeedback>
+                            </Button>
+
+                            <View style={styles.signUpContainer}>
+                                <Text style={styles.baseText}>
+                                    Don't have an account?
+                                </Text>
+                                <TouchableWithoutFeedback onPress={onSignUp}>
+                                    <Text style={[styles.baseText, styles.signUpText]}>
+                                        Sign up
+                                    </Text>
+                                </TouchableWithoutFeedback>
+                            </View>
                         </View>
                     </View>
-                </View>
-            </KeyboardAvoidingView>
+                </KeyboardAvoidingView>
+            </>
         </TouchableWithoutFeedback>
     );
 };

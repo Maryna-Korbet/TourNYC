@@ -3,7 +3,6 @@ import {
   ActivityIndicator,
   StyleSheet,
   View,
-  ImageBackground,
 } from 'react-native';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
@@ -35,13 +34,8 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <ImageBackground
-        source={require('./assets/images/background/background-photo.jpg')}
-        style={styles.background_image}
-      >
         {/* <RegistrationScreen /> */}
         <LoginScreen />
-        </ImageBackground>
     </View>
   );
 };
@@ -50,11 +44,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.white,
-  },
-  background_image: {
-    position: 'absolute',
-    resizeMode: 'cover',
-    height: '100%',
-    width: '100%',
   },
 })

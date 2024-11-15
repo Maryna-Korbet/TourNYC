@@ -9,6 +9,7 @@ import {
 	KeyboardAvoidingView,
 	Alert,
 	Dimensions,
+	Image,
 } from 'react-native';
 import { usePasswordToggle } from '../../../hooks/usePasswordToggle';
 import ShowButton from '../../../components/ShowButton';
@@ -117,83 +118,89 @@ const RegistrationScreen: FC = () => {
 			onBlur={onBlur}
 			onPress={() => Keyboard.dismiss()
 			}>
-			<KeyboardAvoidingView
-				behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-				style={styles.container}
-			>
-				<View
-					style={{
-						...styles.formContainer,
-						paddingBottom: isFocused ? 32 : 92,
-					}}
+			<>
+				<Image
+					source={require('../../../assets/images/background/background-photo.jpg')}
+					style={styles.background_image}
+				/>
+				<KeyboardAvoidingView
+					behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+					style={styles.container}
 				>
-					<View style={styles.avatar}>
-						<TouchableOpacity style={styles.buttonAvatar} onPress={onChangeavatar}>
-							<Text style={styles.buttonAvatarText}>{'+'}</Text>
-						</TouchableOpacity>
-					</View>
-
-					<View style={[styles.formContainer, { width: SCREEN_WIDTH }]}>
-						<Text style={styles.title}>Sign Up</Text>
-						
-						<View style={styles.innerContainer}>
-							<Input
-								value={inputQuery.login}
-								error={error.login}
-								placeholder="Login name"
-								autofocus={true}
-								autoCapitalize='none'
-								onValueChange={(value) => handleValueChange(value, "login")}
-							/>
-						
-							<Input
-								value={inputQuery.email}
-								error={error.email}
-								placeholder="Email address"
-								autofocus={true}
-								autoCapitalize='none'
-								onValueChange={(value) => handleValueChange(value, "email")}
-							/>
-						
-							<Input
-								value={inputQuery.password}
-								error={error.password}
-								placeholder="Password"
-								rightButton={<ShowButton togglePasswordVisibility={togglePasswordVisibility}  />}
-								outerStyles={styles.outerStyles}
-								secureTextEntry={!isPasswordVisible}
-								autoCapitalize='none'
-								onValueChange={(value) => handleValueChange(value, "password")}
-							/>
+					<View
+						style={{
+							...styles.formContainer,
+							paddingBottom: isFocused ? 32 : 92,
+						}}
+					>
+						<View style={styles.avatar}>
+							<TouchableOpacity style={styles.buttonAvatar} onPress={onChangeavatar}>
+								<Text style={styles.buttonAvatarText}>{'+'}</Text>
+							</TouchableOpacity>
 						</View>
-					</View>
 
-					<View style={{ display: isFocused ? 'none' : 'flex' }}>
-						<View style={styles.buttonsContainer}>
-							<Button
-								buttonStyles={styles.button}
-								onPress={onRegistation}
-							>
-								<Text style={[styles.baseText, styles.buttonText]}>
-									Create account
-								</Text>
-							</Button>
+						<View style={[styles.formContainer, { width: SCREEN_WIDTH }]}>
+							<Text style={styles.title}>Sign Up</Text>
+						
+							<View style={styles.innerContainer}>
+								<Input
+									value={inputQuery.login}
+									error={error.login}
+									placeholder="Login name"
+									autofocus={true}
+									autoCapitalize='none'
+									onValueChange={(value) => handleValueChange(value, "login")}
+								/>
+						
+								<Input
+									value={inputQuery.email}
+									error={error.email}
+									placeholder="Email address"
+									autofocus={true}
+									autoCapitalize='none'
+									onValueChange={(value) => handleValueChange(value, "email")}
+								/>
+						
+								<Input
+									value={inputQuery.password}
+									error={error.password}
+									placeholder="Password"
+									rightButton={<ShowButton togglePasswordVisibility={togglePasswordVisibility} />}
+									outerStyles={styles.outerStyles}
+									secureTextEntry={!isPasswordVisible}
+									autoCapitalize='none'
+									onValueChange={(value) => handleValueChange(value, "password")}
+								/>
+							</View>
+						</View>
 
-							<View style={styles.signInContainer}>
-								<Text style={styles.baseText}>
-									Do you already have an account?
-								</Text>
-								<TouchableWithoutFeedback onPress={onSignIn}>
-									<Text style={[styles.baseText, styles.signInText]}>
-										Sign in
+						<View style={{ display: isFocused ? 'none' : 'flex' }}>
+							<View style={styles.buttonsContainer}>
+								<Button
+									buttonStyles={styles.button}
+									onPress={onRegistation}
+								>
+									<Text style={[styles.baseText, styles.buttonText]}>
+										Create account
 									</Text>
-								</TouchableWithoutFeedback>
+								</Button>
+
+								<View style={styles.signInContainer}>
+									<Text style={styles.baseText}>
+										Do you already have an account?
+									</Text>
+									<TouchableWithoutFeedback onPress={onSignIn}>
+										<Text style={[styles.baseText, styles.signInText]}>
+											Sign in
+										</Text>
+									</TouchableWithoutFeedback>
+								</View>
 							</View>
 						</View>
 					</View>
-					</View>
 				</KeyboardAvoidingView>
-			</TouchableWithoutFeedback>
+			</>
+		</TouchableWithoutFeedback>
 	);
 };
 

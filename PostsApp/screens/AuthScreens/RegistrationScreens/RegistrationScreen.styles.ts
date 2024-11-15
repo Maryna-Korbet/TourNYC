@@ -2,6 +2,12 @@ import { StyleSheet } from 'react-native';
 import { colors } from '../../../styles/GlobalStyles';
 
 export const styles = StyleSheet.create({
+	background_image: {
+        position: 'absolute',
+        resizeMode: 'cover',
+        height: '100%',
+        width: '100%',
+    },
 	container: {
 		flex: 1,
 		alignItems: 'center',
@@ -118,11 +124,5 @@ export const styles = StyleSheet.create({
     },
     signInText: {
         textDecorationLine: 'underline',
-	},
-	background_image: {
-		position: 'absolute',
-		resizeMode: 'cover',
-		height: '100%',
-		width: '100%',
 	},
 });

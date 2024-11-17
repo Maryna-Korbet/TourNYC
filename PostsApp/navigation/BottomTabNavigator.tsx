@@ -6,6 +6,7 @@ import TabNavigator from '../components/navigation/TabNavigator';
 import PostsScreen from '../screens/AuthScreens/PostsScreen/PostsScreen';
 import CreatePostsScreen from '../screens/AuthScreens/CreatePostsScreen/CreatePostsScreen';
 import ProfileScreen from '../screens/AuthScreens/ProfileScreen/ProfileScreen';
+import IoniconsElement from '../components/icons/IoniconsElement';
 import IconButton from '../components/buttons/IconButton';
 import LogOutIcon from '../icons/LogOutIcon';
 import ArrowLeftIcon from '../icons/ArrowLeftIcon';
@@ -22,7 +23,7 @@ const BottomTabNavigator: FC = () => {
                 headerTitleStyle: {
                     fontFamily: 'Roboto-Bold',
                     fontSize: 17,
-                    lineHeight: 22, 
+                    lineHeight: 22,
                     letterSpacing: -0.41,
                 },
                 headerTitleAlign: 'center',
@@ -43,7 +44,13 @@ const BottomTabNavigator: FC = () => {
                         />
                     ),
                     tabBarIcon: () => (
-                        <Feather name="grid" size={24} color={colors.black}/>
+                        <IoniconsElement
+                            IconComponent={Feather}
+                            name="grid"
+                            size={24}
+                            color={colors.black}
+                            onPress={() => console.log('Grid')}
+                        />
                     ),
                 }}
             />
@@ -59,7 +66,13 @@ const BottomTabNavigator: FC = () => {
                         />
                     ),
                     tabBarIcon: () => (
-                        <Feather name="plus" size={13} color={colors.black} />
+                        <IoniconsElement
+                            IconComponent={Feather}
+                            name="plus"
+                            color={colors.white}
+                            isOval={true}
+                            onPress={() => console.log('Plus')}
+                        />
                     ),
                 })}
             />
@@ -75,10 +88,16 @@ const BottomTabNavigator: FC = () => {
                         />
                     ),
                     tabBarIcon: () => (
-                        <Feather name="user" size={24} color={colors.black} />
+                        <IoniconsElement
+                            IconComponent={Feather}
+                            name="user"
+                            size={24}
+                            color={colors.black}
+                            onPress={() => console.log('User')}
+                        />
                     ),
                 }}
-                />
+            />
         </TabNavigator>
     )
 };

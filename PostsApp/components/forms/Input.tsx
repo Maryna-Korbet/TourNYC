@@ -6,7 +6,7 @@ import {
     Text
 } from "react-native"
 import React, {FC, useState} from "react";
-import {colors} from "../styles/GlobalStyles";
+import {colors} from "../../styles/GlobalStyles";
 
 
 type InputProps = {

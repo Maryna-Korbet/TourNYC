@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { colors } from '../styles/GlobalStyles';
+import { colors } from '../../styles/GlobalStyles';
 
 
 interface ShowButtonProps {

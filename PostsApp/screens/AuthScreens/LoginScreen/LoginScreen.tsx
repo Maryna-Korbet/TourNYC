@@ -11,9 +11,9 @@ import {
     Image,
 } from 'react-native';
 import { usePasswordToggle } from '../../../hooks/usePasswordToggle';
-import ShowButton from '../../../components/ShowButton';
-import Input from '../../../components/Input';
-import Button from '../../../components/Button';
+import ShowButton from '../../../components/buttons/ShowButton';
+import Input from '../../../components/forms/Input';
+import Button from '../../../components/buttons/Button';
 import { styles } from './LoginScreen.styles';
 
 

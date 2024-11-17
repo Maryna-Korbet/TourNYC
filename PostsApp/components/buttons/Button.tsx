@@ -5,7 +5,7 @@ import {
     StyleSheet,
     ViewProps,
 } from "react-native";
-import {colors} from "../styles/GlobalStyles";
+import {colors} from "../../styles/GlobalStyles";
 
 
 type ButtonProps = {

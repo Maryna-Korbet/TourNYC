@@ -10,6 +10,7 @@ import {
     Alert,
     Image,
 } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { usePasswordToggle } from '../../../hooks/usePasswordToggle';
 import ShowButton from '../../../components/buttons/ShowButton';
 import Input from '../../../components/forms/Input';
@@ -17,11 +18,28 @@ import Button from '../../../components/buttons/Button';
 import { styles } from './LoginScreen.styles';
 
 
+type RootStackParamList = {
+    Registration: undefined,
+    Login: undefined,
+};
+
+type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
+
+interface LoginScreenProps {
+    navigation: LoginScreenNavigationProp,
+    route: any,
+};
+
+interface LoginInputProps{
+	email: string,
+	password: string,
+};
+
 const { width: SCREEN_WIDTH } = Dimensions.get('screen');
 
-const LoginScreen: FC = () => {
-    const [inputQuery, setInputQuery] = useState<{ email: string; password: string }>({ email: '', password: '' });
-    const [error, setError] = useState<{ email: string, password: string }>({ email: '', password: '' });
+const LoginScreen: FC<LoginScreenProps> = ({navigation, route}) => {
+    const [inputQuery, setInputQuery] = useState<LoginInputProps>({ email: '', password: '' });
+    const [error, setError] = useState<LoginInputProps>({ email: '', password: '' });
     const { isPasswordVisible, togglePasswordVisibility } = usePasswordToggle();
 
 
@@ -75,9 +93,7 @@ const LoginScreen: FC = () => {
 
     const onSignUp = () => {
         Keyboard.dismiss();
-
-        console.log("Redirected to RegistrationScreen");
-        Alert.alert("Redirect", "Redirected to RegistrationScreen Successful");
+        navigation.navigate('Registration');
     };
 
     return (

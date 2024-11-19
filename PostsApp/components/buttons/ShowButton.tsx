@@ -5,7 +5,7 @@ import { colors } from '../../styles/GlobalStyles';
 
 interface ShowButtonProps {
     togglePasswordVisibility: () => void;
-}
+};
 
 const ShowButton: FC<ShowButtonProps> = ({ togglePasswordVisibility }) => {
     return (

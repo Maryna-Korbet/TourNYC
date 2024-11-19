@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import {
     Text,
     View,
@@ -11,12 +11,26 @@ import {
 	Dimensions,
 	Image,
 } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { usePasswordToggle } from '../../../hooks/usePasswordToggle';
 import ShowButton from '../../../components/buttons/ShowButton';
 import Input from '../../../components/forms/Input';
 import Button from '../../../components/buttons/Button';
 import { styles } from './RegistrationScreen.styles';
+import { colors } from '../../../styles/GlobalStyles';
 
+
+type RootStackParamList = {
+	Registration: undefined,
+	Login: undefined,
+};
+
+type RegistrationScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Registration'>;
+
+interface RegistrationScreenProps {
+    navigation: RegistrationScreenNavigationProp,
+    route: any,
+};
 
 interface RegistrationInputProps{
 	login: string,
@@ -26,11 +40,22 @@ interface RegistrationInputProps{
 
 const { width: SCREEN_WIDTH } = Dimensions.get('screen');
 
-const RegistrationScreen: FC = () => {
+const RegistrationScreen: FC<RegistrationScreenProps> = ({ navigation, route }) => {
 	const [inputQuery, setInputQuery] = useState<RegistrationInputProps>({ login: '', email: '', password: '' });
 	const [error, setError] = useState<RegistrationInputProps>({ login: '', email: '', password: '' });
 	const { isPasswordVisible, togglePasswordVisibility } = usePasswordToggle();
 	const [isFocused, setIsFocused] = useState(false);
+	const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+
+	useEffect(() => {
+    const showListener = Keyboard.addListener('keyboardDidShow', () => setKeyboardVisible(true));
+    const hideListener = Keyboard.addListener('keyboardDidHide', () => setKeyboardVisible(false));
+
+    return () => {
+        showListener.remove();
+        hideListener.remove();
+    };
+}, []);
 
 	const onFocus = () => {
 		setIsFocused(true);
@@ -107,9 +132,7 @@ const RegistrationScreen: FC = () => {
 
 	const onSignIn = () => {
 		Keyboard.dismiss();
-
-		console.log("Redirected to SignInScreen");
-		Alert.alert("Redirect", "Redirected to SignInScreen Successful");
+		navigation.navigate('Login');
 	};
 
 	return (
@@ -150,6 +173,7 @@ const RegistrationScreen: FC = () => {
 									autofocus={true}
 									autoCapitalize='none'
 									onValueChange={(value) => handleValueChange(value, "login")}
+									placeholderTextColor={isFocused ? '#FF6C00' : '#BDBDBD'}
 								/>
 						
 								<Input
@@ -159,6 +183,7 @@ const RegistrationScreen: FC = () => {
 									autofocus={true}
 									autoCapitalize='none'
 									onValueChange={(value) => handleValueChange(value, "email")}
+									placeholderTextColor={isFocused ? '#FF6C00' : '#BDBDBD'}
 								/>
 						
 								<Input
@@ -170,11 +195,12 @@ const RegistrationScreen: FC = () => {
 									secureTextEntry={!isPasswordVisible}
 									autoCapitalize='none'
 									onValueChange={(value) => handleValueChange(value, "password")}
+									placeholderTextColor={isFocused ? '#FF6C00' : '#BDBDBD'}
 								/>
 							</View>
 						</View>
 
-						<View style={{ display: isFocused ? 'none' : 'flex' }}>
+						<View style={{ display: isKeyboardVisible ? 'none' : 'flex' }}>
 							<View style={styles.buttonsContainer}>
 								<Button
 									buttonStyles={styles.button}

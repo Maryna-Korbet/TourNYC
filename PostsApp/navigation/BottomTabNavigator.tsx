@@ -3,9 +3,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Feather from '@expo/vector-icons/Feather';
 
 import TabNavigator from '../components/navigation/TabNavigator';
-import PostsScreen from '../screens/AuthScreens/PostsScreen/PostsScreen';
-import CreatePostsScreen from '../screens/AuthScreens/CreatePostsScreen/CreatePostsScreen';
-import ProfileScreen from '../screens/AuthScreens/ProfileScreen/ProfileScreen';
+import PostsScreen from '../screens/MainScreen/PostsScreen/PostsScreen';
+import CreatePostsScreen from '../screens/MainScreen/CreatePostsScreen/CreatePostsScreen';
+import ProfileScreen from '../screens/MainScreen/CreatePostsScreen/CreatePostsScreen';
 import IoniconsElement from '../components/icons/IoniconsElement';
 import IconButton from '../components/buttons/IconButton';
 import LogOutIcon from '../icons/LogOutIcon';

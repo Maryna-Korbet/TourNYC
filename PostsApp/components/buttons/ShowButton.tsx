@@ -17,6 +17,7 @@ const ShowButton: FC<ShowButtonProps> = ({ togglePasswordVisibility }) => {
 
 const styles = StyleSheet.create({
     show: {
+        paddingTop: 12,
         fontFamily: 'Roboto-Regular',
         fontSize: 16,
         fontWeight: "400",

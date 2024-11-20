@@ -17,7 +17,6 @@ import ShowButton from '../../../components/buttons/ShowButton';
 import Input from '../../../components/forms/Input';
 import Button from '../../../components/buttons/Button';
 import { styles } from './RegistrationScreen.styles';
-import { colors } from '../../../styles/GlobalStyles';
 
 
 type RootStackParamList = {
@@ -169,6 +168,7 @@ const RegistrationScreen: FC<RegistrationScreenProps> = ({ navigation, route }) 
 								<Input
 									value={inputQuery.login}
 									error={error.login}
+									outerStyles={styles.outerStyles}
 									placeholder="Login name"
 									autofocus={true}
 									autoCapitalize='none'
@@ -179,6 +179,7 @@ const RegistrationScreen: FC<RegistrationScreenProps> = ({ navigation, route }) 
 								<Input
 									value={inputQuery.email}
 									error={error.email}
+									outerStyles={styles.outerStyles}
 									placeholder="Email address"
 									autofocus={true}
 									autoCapitalize='none'
@@ -189,9 +190,9 @@ const RegistrationScreen: FC<RegistrationScreenProps> = ({ navigation, route }) 
 								<Input
 									value={inputQuery.password}
 									error={error.password}
+									outerStyles={styles.outerStyles}
 									placeholder="Password"
 									rightButton={<ShowButton togglePasswordVisibility={togglePasswordVisibility} />}
-									outerStyles={styles.outerStyles}
 									secureTextEntry={!isPasswordVisible}
 									autoCapitalize='none'
 									onValueChange={(value) => handleValueChange(value, "password")}

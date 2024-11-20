@@ -67,7 +67,8 @@ const Input: FC<InputProps> = ({
 
 const styles = StyleSheet.create({
     input: {
-        padding: 16,
+        paddingHorizontal: 16,
+        paddingVertical: 4,
         height: 50,
         borderWidth: 1,
         borderRadius: 8,

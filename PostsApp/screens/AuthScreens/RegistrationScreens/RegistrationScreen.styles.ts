@@ -91,7 +91,8 @@ export const styles = StyleSheet.create({
 	},
 	outerStyles: {
 		flexDirection: 'row',
-        justifyContent: 'space-between',
+		justifyContent: 'space-between',
+		padding: 16,
 	},
 	baseText: {
         fontFamily: 'Roboto-Regular',

@@ -7,20 +7,21 @@ const Stack = createStackNavigator();
 const StackNavigator = () => {
     return (
         <Stack.Navigator
-            initialRouteName='Registration'
-            screenOptions={{
-                headerShown: false,
-            }}
+            initialRouteName='Login'
         >
-            <Stack.Screen
-                name="Registration"
-                component={RegistrationScreen}
-            />
             <Stack.Screen
                 name="Login"
                 component={LoginScreen}
                 options={{
-                    presentation: 'transparentModal',  
+                    presentation: 'transparentModal',
+                    headerShown: false,  
+                }}
+            />
+            <Stack.Screen
+                name="Registration"
+                component={RegistrationScreen}
+                options={{
+                    headerShown: false,
                 }}
             />
         </Stack.Navigator>

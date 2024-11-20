@@ -37,6 +37,10 @@ interface RegistrationInputProps{
 	password: string,
 };
 
+interface UserEmailProps{
+	userEmail: string,
+};
+
 const { width: SCREEN_WIDTH } = Dimensions.get('screen');
 
 const RegistrationScreen: FC<RegistrationScreenProps> = ({ navigation, route }) => {
@@ -47,14 +51,18 @@ const RegistrationScreen: FC<RegistrationScreenProps> = ({ navigation, route }) 
 	const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
 	useEffect(() => {
-    const showListener = Keyboard.addListener('keyboardDidShow', () => setKeyboardVisible(true));
-    const hideListener = Keyboard.addListener('keyboardDidHide', () => setKeyboardVisible(false));
+		const showListener = Keyboard.addListener('keyboardDidShow', () => setKeyboardVisible(true));
+		const hideListener = Keyboard.addListener('keyboardDidHide', () => setKeyboardVisible(false));
 
-    return () => {
-        showListener.remove();
-        hideListener.remove();
-    };
-}, []);
+		if (route.params?.userEmail) {
+			setInputQuery(prev => ({ ...prev, email: route.params.userEmail }));
+		}
+
+		return () => {
+			showListener.remove();
+			hideListener.remove();
+		};
+	}, []);
 
 	const onFocus = () => {
 		setIsFocused(true);

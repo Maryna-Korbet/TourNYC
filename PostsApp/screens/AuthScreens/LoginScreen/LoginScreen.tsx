@@ -19,7 +19,7 @@ import { styles } from './LoginScreen.styles';
 
 
 type RootStackParamList = {
-    Registration: undefined,
+    Registration: { userEmail?: string };
     Login: undefined,
 };
 
@@ -33,6 +33,10 @@ interface LoginScreenProps {
 interface LoginInputProps{
 	email: string,
 	password: string,
+};
+
+interface UserEmailProps {
+    email: string,
 };
 
 const { width: SCREEN_WIDTH } = Dimensions.get('screen');
@@ -91,9 +95,9 @@ const LoginScreen: FC<LoginScreenProps> = ({navigation, route}) => {
     };
 
 
-    const onSignUp = () => {
+    const onSignUp = (inputQuery: UserEmailProps) => {
         Keyboard.dismiss();
-        navigation.navigate('Registration');
+        navigation.navigate('Registration', { userEmail: inputQuery.email });
     };
 
     return (
@@ -146,7 +150,7 @@ const LoginScreen: FC<LoginScreenProps> = ({navigation, route}) => {
                                 <Text style={styles.baseText}>
                                     Don't have an account?
                                 </Text>
-                                <TouchableWithoutFeedback onPress={onSignUp}>
+                                <TouchableWithoutFeedback onPress={() => onSignUp(inputQuery)}>
                                     <Text style={[styles.baseText, styles.signUpText]}>
                                         Sign up
                                     </Text>

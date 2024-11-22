@@ -37,10 +37,6 @@ interface RegistrationInputProps{
 	password: string,
 };
 
-interface UserEmailProps{
-	userEmail: string,
-};
-
 const { width: SCREEN_WIDTH } = Dimensions.get('screen');
 
 const RegistrationScreen: FC<RegistrationScreenProps> = ({ navigation, route }) => {

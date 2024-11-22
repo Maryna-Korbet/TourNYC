@@ -7,7 +7,6 @@ import {
     Platform,
     TouchableWithoutFeedback,
     Keyboard,
-   /*  Alert, */
     Image,
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -90,8 +89,6 @@ const LoginScreen: FC<LoginScreenProps> = ({navigation, route}) => {
         if (!validate()) return;
 
         if (validate()) {
-            /* console.log("Credentials", inputQuery.email, inputQuery.password);
-            Alert.alert("Login", "Login Successful"); */
             navigation.navigate('PostsScreen');
         }
     };

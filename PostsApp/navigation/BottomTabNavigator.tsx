@@ -4,12 +4,15 @@ import Feather from '@expo/vector-icons/Feather';
 
 import TabNavigator from '../components/navigation/TabNavigator';
 import PostsScreen from '../screens/MainScreen/PostsScreen/PostsScreen';
-import CreatePostsScreen from '../screens/MainScreen/CreatePostsScreen/CreatePostsScreen';
+import CreatePostNavigator from '../navigation/CreatePostNavigator';
 import ProfileScreen from '../screens/MainScreen/CreatePostsScreen/CreatePostsScreen';
+import MapScreen from '../screens/MainScreen/MapScreen/MapScreen';
+
 import IoniconsElement from '../components/icons/IoniconsElement';
 import IconButton from '../components/buttons/IconButton';
 import LogOutIcon from '../icons/LogOutIcon';
 import ArrowLeftIcon from '../icons/ArrowLeftIcon';
+
 import { colors } from '../styles/GlobalStyles';
 
 
@@ -55,8 +58,23 @@ const BottomTabNavigator: FC = () => {
                 }}
             />
             <Tab.Screen
-                name="Create Posts"
-                component={CreatePostsScreen}
+                name="Map"
+                component={MapScreen}
+                options={{
+                    title: 'Map',
+                    tabBarIcon: ({ focused }) => (
+                        <IoniconsElement
+                            IconComponent={Feather}
+                            name="map-pin"
+                            size={24}
+                            color={focused ? colors.orange : colors.grey}
+                        />
+                    ),
+                }}
+            />
+            <Tab.Screen
+                name="CreatePostsStack"
+                component={CreatePostNavigator}
                 options={({ navigation }) => ({
                     title: 'Create a publication',
                     headerLeft: () => (
@@ -87,12 +105,12 @@ const BottomTabNavigator: FC = () => {
                             onPress={() => console.log('Log Out')}
                         />
                     ),
-                    tabBarIcon: () => (
+                    tabBarIcon: ({focused}) => (
                         <IoniconsElement
                             IconComponent={Feather}
                             name="user"
                             size={24}
-                            color={colors.black}
+                            color={focused ? colors.orange : colors.black}
                             onPress={() => console.log('User')}
                         />
                     ),

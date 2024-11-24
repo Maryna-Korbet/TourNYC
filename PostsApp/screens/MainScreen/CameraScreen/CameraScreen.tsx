@@ -1,15 +1,12 @@
-import React, { FC } from 'react';
+import React from 'react';
 import {
-    View,
     Text,
 } from 'react-native';
 
 
-const CameraScreen: FC = () => {
+const CameraScreen = () => {
     return (
-        <View> 
-            <Text>Camera</Text>
-        </View>
+        <Text>Camera</Text>
     );
 };
 

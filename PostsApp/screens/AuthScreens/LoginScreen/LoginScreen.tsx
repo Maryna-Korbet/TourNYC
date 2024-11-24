@@ -18,9 +18,9 @@ import { styles } from './LoginScreen.styles';
 
 
 type RootStackParamList = {
-    Registration: { userEmail?: string };
+    Registration: { userEmail?: string },
     Login: undefined,
-    PostsScreen: undefined
+    Home: undefined,
 };
 
 type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
@@ -89,7 +89,7 @@ const LoginScreen: FC<LoginScreenProps> = ({navigation, route}) => {
         if (!validate()) return;
 
         if (validate()) {
-            navigation.navigate('PostsScreen');
+            navigation.navigate('Home');
         }
     };
 

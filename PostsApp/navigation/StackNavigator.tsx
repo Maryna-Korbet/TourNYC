@@ -5,6 +5,12 @@ import BottomTabNavigator from './BottomTabNavigator';
 
 const Stack = createStackNavigator();
 
+export type StackParamList = {
+    Home: undefined,
+    Login: undefined,
+    Registration: undefined,
+};
+
 const StackNavigator = () => {
     return (
         <Stack.Navigator
@@ -26,7 +32,7 @@ const StackNavigator = () => {
                 }}
             />
             <Stack.Screen
-                name="PostsScreen"
+                name="Home"
                 component={BottomTabNavigator}
                 options={{
                     headerShown: false,

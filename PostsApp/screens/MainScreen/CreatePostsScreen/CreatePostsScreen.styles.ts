@@ -8,6 +8,9 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
+    camera: {
+        height: 300,
+    },
 });
 
 export default styles;

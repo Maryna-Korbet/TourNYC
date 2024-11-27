@@ -9,12 +9,11 @@ import {
 } from 'react-native';
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import IconButton from '../../../components/buttons/IconButton';
 import CameraIcon from '../../../icons/CameraIcon';
-import IoniconsElement from '../../../components/icons/IoniconsElement';
+import CameraSwitchIcon from '../../../icons/CameraSwitch';
 
 import { colors } from '../../../styles/GlobalStyles';
 import { styles } from './CameraScreen.styles';
@@ -22,8 +21,8 @@ import { styles } from './CameraScreen.styles';
 
 
 type CreatePostStackParamList = {
-    Camera: undefined;
-    CreatePost: { picture?: string }
+    Camera: undefined,
+    CreatePost: { picture?: string },
 };
 
 type CameraScreenProps = NativeStackScreenProps<CreatePostStackParamList, 'Camera'>;
@@ -107,6 +106,7 @@ const CameraScreen: FC<CameraScreenProps> = ({ navigation, route }) => {
                 setPicture(picture.uri);
                 navigation.navigate('CreatePost', { picture: picture.uri });
                 alert('Photo saved to library!');
+                console.log("photo---->", picture)
             } else {
                 alert('Something went wrong!');
             }
@@ -139,14 +139,11 @@ const CameraScreen: FC<CameraScreenProps> = ({ navigation, route }) => {
                 </View>
 
                 <View>
-                    <TouchableOpacity style={styles.toggleButton}>
-                        <IoniconsElement
-                            IconComponent={MaterialIcons}
-                            name="flip-camera-ios"
-                            color={colors.white}
-                            size={24}
-                            onPress={toggleCameraFacing}
-                        />
+                    <TouchableOpacity
+                        style={styles.toggleButton}
+                        onPress={toggleCameraFacing}
+                    >
+                        <CameraSwitchIcon />
                     </TouchableOpacity>
                 </View>
             </CameraView>
@@ -166,7 +163,6 @@ const CameraScreen: FC<CameraScreenProps> = ({ navigation, route }) => {
                     </Text>
                 </View>
             </TouchableOpacity>
-
         </View>
     );
 };

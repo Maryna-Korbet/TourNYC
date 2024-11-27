@@ -17,7 +17,7 @@ const Stack = createStackNavigator<CreatePostStackParamList>();
 const CreatePostNavigator = () => {
     return (
         <Stack.Navigator
-            initialRouteName="CreatePost" 
+            initialRouteName="CreatePost"
             screenOptions={({ navigation }) => ({
                 headerRightContainerStyle: { paddingRight: 16 },
                 headerLeftContainerStyle: { paddingLeft: 16 },

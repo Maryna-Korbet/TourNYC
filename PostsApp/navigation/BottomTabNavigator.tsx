@@ -103,7 +103,7 @@ const BottomTabNavigator: FC = () => {
                             onPress={() => console.log('Log Out')}
                         />
                     ),
-                    tabBarIcon: ({focused}) => (
+                    tabBarIcon: ({ focused }) => (
                         <IoniconsElement
                             IconComponent={Feather}
                             name="user"

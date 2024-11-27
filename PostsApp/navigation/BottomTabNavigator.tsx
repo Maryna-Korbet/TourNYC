@@ -7,7 +7,6 @@ import PostsScreen from '../screens/MainScreen/PostsScreen/PostsScreen';
 import CreatePostNavigator from '../navigation/CreatePostNavigator';
 import ProfileScreen from '../screens/MainScreen/CreatePostsScreen/CreatePostsScreen';
 import MapScreen from '../screens/MainScreen/MapScreen/MapScreen';
-import CameraScreen from '../screens/MainScreen/CameraScreen/CameraScreen';
 
 import IoniconsElement from '../components/icons/IoniconsElement';
 import IconButton from '../components/buttons/IconButton';
@@ -108,21 +107,6 @@ const BottomTabNavigator: FC = () => {
                         <IoniconsElement
                             IconComponent={Feather}
                             name="user"
-                            size={24}
-                            color={focused ? colors.orange : colors.black}
-                        />
-                    ),
-                }}
-            />
-            <Tab.Screen
-                name="Camera"
-                component={CameraScreen}
-                options={{
-                    title: 'Camera',
-                    tabBarIcon: ({focused}) => (
-                        <IoniconsElement
-                            IconComponent={Feather}
-                            name="camera"
                             size={24}
                             color={focused ? colors.orange : colors.black}
                         />

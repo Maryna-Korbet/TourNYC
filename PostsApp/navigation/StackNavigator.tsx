@@ -11,6 +11,7 @@ export type StackParamList = {
     Registration: undefined,
 };
 
+
 const StackNavigator = () => {
     return (
         <Stack.Navigator

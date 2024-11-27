@@ -1,14 +1,33 @@
-import React, { FC } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import {
     View,
-    Text,
 } from 'react-native';
 
+import CameraScreen from '../CameraScreen/CameraScreen';
 
-const CreatePostsScreen: FC = () => {
+import { styles } from './CreatePostsScreen.styles';
+
+
+
+type CreatePostsScreenProps = {
+    navigation: any;
+    route: any;
+}
+
+const CreatePostsScreen: FC<CreatePostsScreenProps> = ({ navigation, route }) => {
+    const [posts, setPosts] = useState<string[]>([]);
+
+    useEffect(() => {
+        if (route.params) {
+            setPosts(prev => [...prev, route.params]);
+        }
+    }, [route.params]);
+
+    console.log("posts---->", posts);
+
     return (
-        <View> 
-            <Text>CreatePosts</Text>
+        <View style={styles.container}>
+            <CameraScreen navigation={navigation} route={route}/>
         </View>
     );
 };

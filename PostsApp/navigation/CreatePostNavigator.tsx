@@ -7,7 +7,12 @@ import IconButton from '../components/buttons/IconButton';
 import ArrowLeftIcon from '../icons/ArrowLeftIcon';
 
 
-const Stack = createStackNavigator();
+export type CreatePostStackParamList = {
+    Camera: undefined;
+    CreatePost: { picture?: string };
+};
+
+const Stack = createStackNavigator<CreatePostStackParamList>();
 
 const CreatePostNavigator = () => {
     return (
@@ -26,6 +31,7 @@ const CreatePostNavigator = () => {
         >
             <Stack.Screen
                 name="CreatePost"
+                options={{ headerShown: false }}
                 component={CreatePostsScreen}
             />
             <Stack.Screen

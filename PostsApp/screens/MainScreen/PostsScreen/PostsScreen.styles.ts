@@ -6,12 +6,13 @@ export const styles = StyleSheet.create({
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        marginHorizontal: 16,
+        paddingHorizontal: 16,
         backgroundColor: colors.white,
     },
     postContainer: {
         flex: 1,
         marginVertical: 32,
+        backgroundColor: colors.white,
     },
     postText: {
         fontFamily: 'Roboto-Regular',

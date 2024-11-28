@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         gap: 8,
-        marginVertical: 32,
+        paddingVertical: 32,
     },
     permissionContainer: {
         position: "absolute",

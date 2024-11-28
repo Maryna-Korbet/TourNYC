@@ -5,7 +5,7 @@ import Feather from '@expo/vector-icons/Feather';
 import TabNavigator from '../components/navigation/TabNavigator';
 import PostsScreen from '../screens/MainScreen/PostsScreen/PostsScreen';
 import CreatePostNavigator from '../navigation/CreatePostNavigator';
-import ProfileScreen from '../screens/MainScreen/CreatePostsScreen/CreatePostsScreen';
+import ProfileScreen from '../screens/MainScreen/ProfileScreen/ProfileScreen';
 import MapScreen from '../screens/MainScreen/MapScreen/MapScreen';
 
 import IoniconsElement from '../components/icons/IoniconsElement';

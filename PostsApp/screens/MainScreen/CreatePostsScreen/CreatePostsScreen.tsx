@@ -31,20 +31,18 @@ const CreatePostsScreen: FC<CreatePostsScreenProps> = ({ navigation, route }) =>
     }
 
     return (
-        
         <View style={styles.container}>
-            <CameraScreen navigation={navigation} route={route} />
+                <CameraScreen navigation={navigation} route={route} />
 
-            <View style={styles.publishButton}>
-                <Button
-                    onPress={onPublishButton}
-                >
-                    <Text style={styles.publishButtonText}>
-                        Publish
-                    </Text>
-                </Button>
-            </View>
-            
+                <View style={styles.publishButton}>
+                    <Button
+                        onPress={onPublishButton}
+                    >
+                        <Text style={styles.publishButtonText}>
+                            Publish
+                        </Text>
+                    </Button>
+                </View>
         </View>
     );
 };

@@ -5,11 +5,16 @@ import {
     TouchableOpacity,
     Button,
     AccessibilityInfo,
-    findNodeHandle
+    findNodeHandle,
 } from 'react-native';
-import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
-import * as MediaLibrary from 'expo-media-library';
+import {
+    CameraView,
+    CameraType,
+    useCameraPermissions,
+} from 'expo-camera';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import * as MediaLibrary from 'expo-media-library';
+import * as Location from 'expo-location';
 
 import IconButton from '../../../components/buttons/IconButton';
 import CameraIcon from '../../../icons/CameraIcon';
@@ -22,7 +27,10 @@ import { styles } from './CameraScreen.styles';
 
 type CreatePostStackParamList = {
     Camera: undefined,
-    CreatePost: { picture?: string },
+    CreatePost: {
+        picture?: string,
+        location?: Location.LocationObject | undefined,
+    },
 };
 
 type CameraScreenProps = NativeStackScreenProps<CreatePostStackParamList, 'Camera'>;
@@ -41,10 +49,31 @@ const CameraScreen: FC<CameraScreenProps> = ({ navigation, route }) => {
     }, []);
 
     // Camera permissions
-    const [facing, setFacing] = useState<CameraType>('back');
     const [cameraPermission, requestCameraPermission] = useCameraPermissions();
     const [libraryPermission, requestLibraryPermission] = MediaLibrary.usePermissions();
+    // Camera picture
+    const [facing, setFacing] = useState<CameraType>('back');
     const [picture, setPicture] = useState<string | null>(null);
+    // Camera location
+    const [location, setLocation] = useState<Location.LocationObject | null>(null);
+    const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+    // Handle Location Permissions
+    useEffect(() => {
+        async function getCurrentLocation() {
+
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                setErrorMsg('Permission to access location was denied');
+                return;
+            }
+
+            let location = await Location.getCurrentPositionAsync({});
+            setLocation(location);
+        }
+
+        getCurrentLocation();
+    }, []);
 
     // Handle Camera Permissions
     if (!cameraPermission) return <View />;
@@ -90,6 +119,13 @@ const CameraScreen: FC<CameraScreenProps> = ({ navigation, route }) => {
         );
     }
 
+    let text = 'Waiting...';
+    if (errorMsg) {
+        text = errorMsg;
+    } else if (location) {
+        text = JSON.stringify(location);
+    };
+
     // Toggle Camera Facing
     function toggleCameraFacing() {
         setFacing(current => (current === 'back' ? 'front' : 'back'));
@@ -101,16 +137,27 @@ const CameraScreen: FC<CameraScreenProps> = ({ navigation, route }) => {
 
         try {
             const picture = await cameraRef.current.takePictureAsync();
+            const currentLocation = location || await Location.getCurrentPositionAsync();
+
             if (picture?.uri) {
                 await MediaLibrary.saveToLibraryAsync(picture.uri);
                 setPicture(picture.uri);
-                navigation.navigate('CreatePost', { picture: picture.uri });
+
+                navigation.navigate('CreatePost', {
+                    picture: picture.uri,
+                    location: currentLocation,
+                });
+                
                 alert('Photo saved to library!');
+
+                //!: Delete later console.log
                 console.log("photo---->", picture)
+                console.log("location--->", location);
             } else {
                 alert('Something went wrong!');
             }
         } catch (error) {
+            //!: Delete later console.log
             console.error('Error taking or saving photo:', error);
             alert('Error taking or saving photo!');
         }

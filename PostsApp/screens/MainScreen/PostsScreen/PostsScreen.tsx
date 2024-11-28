@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import {
     View,
     Image,
+    Text,
 } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 
@@ -9,7 +10,13 @@ import { styles } from './PostsScreen.styles';
 
 
 type Post = {
-    picture: string;
+    picture: string,
+    location?: {
+        coords: {
+            latitude: number,
+            longitude: number,
+        }
+    }
 };
 
 type PostsScreenProps = {
@@ -26,23 +33,37 @@ const PostsScreen: FC<PostsScreenProps> = ({ route }) => {
         }
     }, [posts]);
 
+    const picturesCoordinates = () => {
+        return postList.map((post) => {
+            if (post.location?.coords) {
+                const { latitude, longitude } = post.location.coords;
+                return `Latitude: ${latitude}, Longitude: ${longitude}`;
+            }
+            return `No location data available`;
+        })
+            .join('\n');
+    }
+
     return (
         <View style={styles.container}>
             <FlatList
-                data={posts}
+                data={postList}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item }) => (
                     <View style={styles.postContainer}>
                         <Image
                             source={{ uri: item.picture }}
                             style={styles.postPicture}
-                            onError={(e) => console.log('Image load error', e.nativeEvent.error)}
                         />
+                        <View >
+                            <Text style={styles.picturesLoationTitle}>Location:</Text>
+                            <Text style={styles.picturesLoationText}>{picturesCoordinates()}</Text>
+                        </View>
                     </View>
                 )}
             />
         </View>
-    )
+    );
 };
 
 export default PostsScreen;

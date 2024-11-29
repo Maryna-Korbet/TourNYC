@@ -5,12 +5,11 @@ export const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.white,
-        paddingHorizontal: 16,
     },
- /*    publishContainer: {
+    publishContainer: {
         flex: 1,
         marginHorizontal: 16,
-    }, */
+    }, 
     publishButton: {
         flex: 1,
         width: "100%",

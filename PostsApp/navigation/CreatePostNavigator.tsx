@@ -1,7 +1,7 @@
 import { createStackNavigator } from "@react-navigation/stack";
 
 import CreatePostsScreen from "../screens/MainScreen/CreatePostsScreen/CreatePostsScreen";
-import CameraScreen from "../screens/MainScreen/CameraScreen/CameraScreen";
+import CameraScreen from "../screens/NestedScreens/CameraScreen/CameraScreen";
 
 import IconButton from '../components/buttons/IconButton';
 import ArrowLeftIcon from '../icons/ArrowLeftIcon';

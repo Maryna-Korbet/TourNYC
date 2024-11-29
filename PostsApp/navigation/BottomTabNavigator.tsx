@@ -3,10 +3,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Feather from '@expo/vector-icons/Feather';
 
 import TabNavigator from '../components/navigation/TabNavigator';
-import PostsScreen from '../screens/MainScreen/PostsScreen/PostsScreen';
+import PostsScreen from '../screens/NestedScreens/DefaultPostsScreen/DefaultPostsScreen';
 import CreatePostNavigator from '../navigation/CreatePostNavigator';
 import ProfileScreen from '../screens/MainScreen/ProfileScreen/ProfileScreen';
-import MapScreen from '../screens/MainScreen/MapScreen/MapScreen';
+import MapScreen from '../screens/NestedScreens/MapScreen/MapScreen';
 
 import IoniconsElement from '../components/icons/IoniconsElement';
 import IconButton from '../components/buttons/IconButton';
@@ -59,8 +59,14 @@ const BottomTabNavigator: FC = () => {
             <Tab.Screen
                 name="Map"
                 component={MapScreen}
-                options={{
+                options={({ navigation }) => ({
                     title: 'Map',
+                    headerLeft: () => (
+                        <IconButton
+                            icon={<ArrowLeftIcon />}
+                            onPress={() => navigation.goBack()}
+                        />
+                    ),
                     tabBarIcon: ({ focused }) => (
                         <IoniconsElement
                             IconComponent={Feather}
@@ -69,7 +75,7 @@ const BottomTabNavigator: FC = () => {
                             color={focused ? colors.orange : colors.grey}
                         />
                     ),
-                }}
+                })}
             />
             <Tab.Screen
                 name="CreatePostsStack"

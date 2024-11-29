@@ -4,7 +4,7 @@ import {
     Text,
 } from 'react-native';
 
-import CameraScreen from '../CameraScreen/CameraScreen';
+import CameraScreen from '../../NestedScreens/CameraScreen/CameraScreen';
 import Button from '../../../components/buttons/Button';
 
 import { styles } from './CreatePostsScreen.styles';
@@ -32,6 +32,7 @@ const CreatePostsScreen: FC<CreatePostsScreenProps> = ({ navigation, route }) =>
 
     return (
         <View style={styles.container}>
+            <View style={styles.publishContainer}>
                 <CameraScreen navigation={navigation} route={route} />
 
                 <View style={styles.publishButton}>
@@ -43,6 +44,8 @@ const CreatePostsScreen: FC<CreatePostsScreenProps> = ({ navigation, route }) =>
                         </Text>
                     </Button>
                 </View>
+            </View>
+
         </View>
     );
 };

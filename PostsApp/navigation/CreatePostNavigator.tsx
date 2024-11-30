@@ -1,4 +1,5 @@
 import { createStackNavigator } from "@react-navigation/stack";
+import * as Location from 'expo-location';
 
 import CreatePostsScreen from "../screens/MainScreen/CreatePostsScreen/CreatePostsScreen";
 import CameraScreen from "../screens/NestedScreens/CameraScreen/CameraScreen";
@@ -9,7 +10,13 @@ import ArrowLeftIcon from '../icons/ArrowLeftIcon';
 
 export type CreatePostStackParamList = {
     Camera: undefined;
-    CreatePost: { picture?: string };
+    CreatePost: {
+        picture?: string,
+        location?: Location.LocationObject | undefined;
+    };
+    Map: {
+        location?: Location.LocationObject | undefined;
+    };
 };
 
 const Stack = createStackNavigator<CreatePostStackParamList>();

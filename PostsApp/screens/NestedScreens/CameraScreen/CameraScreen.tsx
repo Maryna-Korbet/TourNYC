@@ -1,4 +1,10 @@
-import React, { FC, RefObject, useState, useRef, useEffect } from 'react';
+import React, {
+    FC,
+    RefObject,
+    useState,
+    useRef,
+    useEffect,
+} from 'react';
 import {
     View,
     Text,
@@ -31,6 +37,9 @@ type CreatePostStackParamList = {
         picture?: string,
         location?: Location.LocationObject | undefined,
     },
+    Map: {
+        location?: Location.LocationObject | undefined,
+    }
 };
 
 type CameraScreenProps = NativeStackScreenProps<CreatePostStackParamList, 'Camera'>;
@@ -119,13 +128,6 @@ const CameraScreen: FC<CameraScreenProps> = ({ navigation, route }) => {
         );
     }
 
-    let text = 'Waiting...';
-    if (errorMsg) {
-        text = errorMsg;
-    } else if (location) {
-        text = JSON.stringify(location);
-    };
-
     // Toggle Camera Facing
     function toggleCameraFacing() {
         setFacing(current => (current === 'back' ? 'front' : 'back'));
@@ -147,6 +149,13 @@ const CameraScreen: FC<CameraScreenProps> = ({ navigation, route }) => {
                     picture: picture.uri,
                     location: currentLocation,
                 });
+
+                if (currentLocation) {
+                    navigation.navigate('Map', { location: currentLocation });
+                } else {
+                     //!: Delete later console.log
+                    console.log('Location is not available.');
+                }
                 
                 alert('Photo saved to library!');
 

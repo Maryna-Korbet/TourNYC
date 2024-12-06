@@ -16,9 +16,11 @@ type InputProps = {
     placeholderTextColor?: string,
     outerStyles?: ViewProps['style'],
     rightButton?: React.ReactNode,
+    leftButton?: React.ReactNode,
     secureTextEntry?: boolean,
     autofocus?: boolean,
     autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters',
+    icon?: React.ReactNode,
     onValueChange: (value: string) => void,
 };
 
@@ -29,9 +31,11 @@ const Input: FC<InputProps> = ({
     placeholderTextColor,
     outerStyles,
     rightButton,
+    leftButton,
     secureTextEntry = false,
     autofocus = false,
     autoCapitalize = 'none',
+    icon,
     onValueChange,
     ...props
 }) => {
@@ -48,6 +52,7 @@ const Input: FC<InputProps> = ({
     return (
         <View style={[styles.input, isFocused && styles.focused, outerStyles, props]}>
             {error ? <Text style={styles.errorText}>{error}</Text> : null}
+            {leftButton && <View style={styles.leftButton}>{leftButton}</View>}
             <TextInput
                 style={styles.textInput}
                 value={value}
@@ -59,7 +64,7 @@ const Input: FC<InputProps> = ({
                 onFocus={onFocus}
                 onBlur={onBlur}
                 onChangeText={onValueChange}
-            />
+            />  
             {rightButton}
         </View>
     )
@@ -94,6 +99,11 @@ const styles = StyleSheet.create({
         borderColor: colors.orange,
         backgroundColor: colors.white,
         color: colors.black,
+    },
+    leftButton: {
+        marginRight: 8,
+        padding: 0,
+        margin: 0,
     },
 });
 

@@ -11,14 +11,16 @@ import {colors} from "../../styles/GlobalStyles";
 type ButtonProps = {
     children: React.ReactNode,
     buttonStyles?: ViewProps['style'],
+    disabled?: boolean,
     onPress: () => void,
 };
 
-const Button: FC<ButtonProps> = ({ children, buttonStyles, onPress }) => {
+const Button: FC<ButtonProps> = ({ children, buttonStyles, disabled, onPress }) => {
     return (
         <View>
             <TouchableOpacity
                 style={[styles.button, buttonStyles]}
+                disabled={disabled}
                 onPress={onPress}
             >
                 {children}

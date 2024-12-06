@@ -1,11 +1,18 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import * as Location from 'expo-location';
 
+import { Feather } from '@expo/vector-icons';
+
 import CreatePostsScreen from "../screens/MainScreen/CreatePostsScreen/CreatePostsScreen";
 import CameraScreen from "../screens/NestedScreens/CameraScreen/CameraScreen";
+import MapScreen from "../screens/NestedScreens/MapScreen/MapScreen";
 
+import IoniconsElement from "../components/icons/IoniconsElement";
 import IconButton from '../components/buttons/IconButton';
 import ArrowLeftIcon from '../icons/ArrowLeftIcon';
+
+import { colors } from "../styles/GlobalStyles";
+
 
 
 export type CreatePostStackParamList = {
@@ -18,6 +25,7 @@ export type CreatePostStackParamList = {
         location?: Location.LocationObject | undefined;
     };
 };
+
 
 const Stack = createStackNavigator<CreatePostStackParamList>();
 
@@ -44,6 +52,19 @@ const CreatePostNavigator = () => {
             <Stack.Screen
                 name="Camera"
                 component={CameraScreen}
+            />
+            <Stack.Screen
+                name="Map"
+                component={MapScreen}
+                options={({ navigation }) => ({
+                    title: 'Map',
+                    headerLeft: () => (
+                        <IconButton
+                            icon={<ArrowLeftIcon />}
+                            onPress={() => navigation.goBack()}
+                        />
+                    )
+                })}
             />
         </Stack.Navigator>
     )

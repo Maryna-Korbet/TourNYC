@@ -35,7 +35,7 @@ type CreatePostStackParamList = {
     Camera: undefined,
     CreatePost: {
         picture?: string,
-        location?: Location.LocationObject | undefined,
+        location?: Location.LocationObject | null,
     },
     Map: {
         location?: Location.LocationObject | undefined,
@@ -44,7 +44,7 @@ type CreatePostStackParamList = {
 
 type CameraScreenProps = NativeStackScreenProps<CreatePostStackParamList, 'Camera'>;
 
-const CameraScreen: FC<CameraScreenProps> = ({ navigation, route }) => {
+const CameraScreen: FC<CameraScreenProps> = ({ navigation }) => {
     const cameraRef: RefObject<any> = useRef(null);
     const messageRef = useRef<Text | null>(null);
 
@@ -77,8 +77,8 @@ const CameraScreen: FC<CameraScreenProps> = ({ navigation, route }) => {
                 return;
             }
 
-            let location = await Location.getCurrentPositionAsync({});
-            setLocation(location);
+            let loc = await Location.getCurrentPositionAsync({});
+            setLocation(loc);
         }
 
         getCurrentLocation();
@@ -91,7 +91,7 @@ const CameraScreen: FC<CameraScreenProps> = ({ navigation, route }) => {
             <View style={styles.permissionContainer}>
                 <Text
                     ref={messageRef}
-                    style={styles.permissioMmessage}
+                    style={styles.permissionMessage}
                     accessibilityRole="text"
                 >
                     We need your permission to show the camera
@@ -113,7 +113,7 @@ const CameraScreen: FC<CameraScreenProps> = ({ navigation, route }) => {
             <View style={styles.permissionContainer}>
                 <Text
                     ref={messageRef}
-                    style={styles.permissioMmessage}
+                    style={styles.permissionMessage}
                     accessibilityRole="text"
                 >
                     We need your permission to save the photo
@@ -138,40 +138,14 @@ const CameraScreen: FC<CameraScreenProps> = ({ navigation, route }) => {
         if (!cameraRef.current) return;
 
         try {
-            const picture = await cameraRef.current.takePictureAsync();
-            const currentLocation = location || await Location.getCurrentPositionAsync();
-
-            if (picture?.uri) {
-                await MediaLibrary.saveToLibraryAsync(picture.uri);
-                setPicture(picture.uri);
-
-                navigation.navigate('CreatePost', {
-                    picture: picture.uri,
-                    location: currentLocation,
-                });
-
-                if (currentLocation) {
-                    navigation.navigate('Map', { location: currentLocation });
-                } else {
-                     //!: Delete later console.log
-                    console.log('Location is not available.');
-                }
-                
-                alert('Photo saved to library!');
-
-                //!: Delete later console.log
-                console.log("photo---->", picture)
-                console.log("location--->", location);
-            } else {
-                alert('Something went wrong!');
-            }
+            const photo = await cameraRef.current.takePictureAsync();
+            setPicture(photo.uri);
+            navigation.navigate('CreatePost', { picture: photo.uri, location });
         } catch (error) {
-            //!: Delete later console.log
-            console.error('Error taking or saving photo:', error);
             alert('Error taking or saving photo!');
         }
     };
-
+ 
     return (
         <View style={styles.container}>
             <CameraView

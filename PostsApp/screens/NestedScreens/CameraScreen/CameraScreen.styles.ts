@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         gap: 8,
     },
-    permissioMmessage: {
+    permissionMessage: {
         fontFamily: 'Roboto-Medium',
         fontSize: 16,
         textAlign: 'center',

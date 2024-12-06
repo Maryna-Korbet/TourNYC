@@ -57,27 +57,6 @@ const BottomTabNavigator: FC = () => {
                 }}
             />
             <Tab.Screen
-                name="Map"
-                component={MapScreen}
-                options={({ navigation }) => ({
-                    title: 'Map',
-                    headerLeft: () => (
-                        <IconButton
-                            icon={<ArrowLeftIcon />}
-                            onPress={() => navigation.goBack()}
-                        />
-                    ),
-                    tabBarIcon: ({ focused }) => (
-                        <IoniconsElement
-                            IconComponent={Feather}
-                            name="map-pin"
-                            size={24}
-                            color={focused ? colors.orange : colors.grey}
-                        />
-                    ),
-                })}
-            />
-            <Tab.Screen
                 name="CreatePostsStack"
                 component={CreatePostNavigator}
                 options={({ navigation }) => ({

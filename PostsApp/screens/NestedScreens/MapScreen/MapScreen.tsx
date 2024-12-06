@@ -6,26 +6,39 @@ import * as Location from 'expo-location';
 import { getAddressFromCoordinates } from '../../../services/getAddressFromCoordinates';
 import { styles } from './MapScreen.style';
 
+type MapScreenProps = {
+    route: any;
+    navigation: any;
+};
+
 type Coordinates = {
     latitude: number;
     longitude: number;
 };
 
-const MapScreen: FC<{ route: any }> = ({ route }) => {
+const MapScreen: FC<MapScreenProps> = ({ route, navigation }) => {
     const [location, setLocation] = useState<Coordinates | null>(null);
     const [markerCoords, setMarkerCoords] = useState<Coordinates | null>(null);
     const [address, setAddress] = useState<string>('');
 
     useEffect(() => {
-        // If the coordinates from the picture are transferred, set the marker
-        if (route.params?.location) {
-            const { latitude, longitude } = route.params.location.coords;
+        if (route.params?.currentLocation) {
+            const { latitude, longitude } = route.params.currentLocation;
             setMarkerCoords({ latitude, longitude });
             fetchAddress(latitude, longitude);
         } else {
             getCurrentLocation();
         }
     }, [route.params]);
+
+    const fetchAddress = async (latitude: number, longitude: number) => {
+        try {
+            const fetchedAddress = await getAddressFromCoordinates({ latitude, longitude });
+            setAddress(fetchedAddress);
+        } catch (error) {
+            console.error('Failed to fetch address:', error);
+        }
+    };
 
     const getCurrentLocation = async () => {
         const { status } = await Location.requestForegroundPermissionsAsync();
@@ -36,52 +49,35 @@ const MapScreen: FC<{ route: any }> = ({ route }) => {
 
         const location = await Location.getCurrentPositionAsync({});
         const { latitude, longitude } = location.coords;
+        fetchAddress(latitude, longitude);
         setLocation({ latitude, longitude });
         setMarkerCoords({ latitude, longitude });
-        fetchAddress(latitude, longitude);
-    };
-
-    const fetchAddress = async (latitude: number, longitude: number) => {
-        try {
-            const fetchedAddress = await getAddressFromCoordinates({ latitude, longitude });
-            
-            //!: Delete later console.log
-            console.log('Fetched address:', fetchedAddress);
-            setAddress(fetchedAddress);
-        } catch (error) {
-            console.error('Failed to fetch address:', error);
-        }
     };
 
     const handleMarkerDragEnd = async (event: any) => {
         const newCoords = event.nativeEvent.coordinate;
         setMarkerCoords(newCoords);
-        fetchAddress(newCoords.latitude, newCoords.longitude);
+        const fetchedAddress = await getAddressFromCoordinates(newCoords);
+        setAddress(fetchedAddress);
+        navigation.navigate('CreatePost', { address: fetchedAddress });
     };
 
     return (
         <View style={styles.container}>
             <MapView
-                style={styles.mapStyle}
                 provider={PROVIDER_GOOGLE}
+                style={styles.mapStyle}
                 initialRegion={{
-                    latitude: location?.latitude || 37.4220936,
-                    longitude: location?.longitude || -122.083922,
+                    latitude: markerCoords?.latitude || 37.78825,
+                    longitude: markerCoords?.longitude || -122.4324,
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
-                }}
-                onPress={(event) => {
-                    const newCoords = event.nativeEvent.coordinate;
-                    setMarkerCoords(newCoords);
-                    fetchAddress(newCoords.latitude, newCoords.longitude);
                 }}
             >
                 {markerCoords && (
                     <Marker
-                        draggable
                         coordinate={markerCoords}
-                        title="Location"
-                        description={address || 'Fetching address...'}
+                        draggable
                         onDragEnd={handleMarkerDragEnd}
                     />
                 )}

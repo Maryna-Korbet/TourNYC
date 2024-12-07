@@ -22,8 +22,12 @@ const MapScreen: FC<MapScreenProps> = ({ route, navigation }) => {
     const [address, setAddress] = useState<string>('');
 
     useEffect(() => {
-        if (route.params?.currentLocation) {
-            const { latitude, longitude } = route.params.currentLocation;
+        if (route.params?.location) {
+            const { latitude, longitude } = route.params.location.coords;
+
+            //! Delete cosole.log
+            console.log('latitude Map-->', latitude, 'longitude Map-->', longitude);
+
             setMarkerCoords({ latitude, longitude });
             fetchAddress(latitude, longitude);
         } else {
@@ -35,6 +39,8 @@ const MapScreen: FC<MapScreenProps> = ({ route, navigation }) => {
         try {
             const fetchedAddress = await getAddressFromCoordinates({ latitude, longitude });
             setAddress(fetchedAddress);
+            //! Delete cosole.log
+            console.log('fetchedAddress Map-->', fetchedAddress);
         } catch (error) {
             console.error('Failed to fetch address:', error);
         }
@@ -48,10 +54,17 @@ const MapScreen: FC<MapScreenProps> = ({ route, navigation }) => {
         }
 
         const location = await Location.getCurrentPositionAsync({});
+
+        //! Delete cosole.log
+        console.log('location Map-->', location);
+
         const { latitude, longitude } = location.coords;
         fetchAddress(latitude, longitude);
         setLocation({ latitude, longitude });
         setMarkerCoords({ latitude, longitude });
+
+        //! Delete cosole.log
+        console.log('latitude Map-->', latitude, 'longitude Map-->', longitude);
     };
 
     const handleMarkerDragEnd = async (event: any) => {
@@ -73,10 +86,16 @@ const MapScreen: FC<MapScreenProps> = ({ route, navigation }) => {
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
                 }}
+                onPress={(event) => {
+                    const newCoords = event.nativeEvent.coordinate;
+                    setMarkerCoords(newCoords);
+                    fetchAddress(newCoords.latitude, newCoords.longitude);
+                }}
             >
                 {markerCoords && (
                     <Marker
                         coordinate={markerCoords}
+                        description={address || 'Fetching address...'}
                         draggable
                         onDragEnd={handleMarkerDragEnd}
                     />

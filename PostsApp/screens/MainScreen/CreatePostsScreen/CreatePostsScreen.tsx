@@ -10,6 +10,8 @@ import {
     ScrollView,
 } from 'react-native';
 
+import { getAddressFromCoordinates } from '../../../services/getAddressFromCoordinates';
+
 import CameraScreen from '../../NestedScreens/CameraScreen/CameraScreen';
 import Button from '../../../components/buttons/Button';
 import LocationButton from '../../../components/buttons/LocationButton';
@@ -33,14 +35,25 @@ const CreatePostsScreen: FC<CreatePostsScreenProps> = ({ navigation, route }) =>
     const [picture, setPicture] = useState<string | null>(null);
     const [location, setLocation] = useState<LocationProps | null>(null);
     const [address, setAddress] = useState<string | null>(null);
-    
 
     useEffect(() => {
         if (route.params?.picture) setPicture(route.params.picture);
-        if (route.params?.location) setLocation(route.params.location);
+        if (route.params?.location) {
+            setLocation(route.params.location);
 
+            const { latitude, longitude } = route.params.location.coords;
+            const addressFirst = getAddressFromCoordinates({ latitude, longitude });
+            addressFirst.then((address) => setAddress(address));
+
+            //! Delete cosole.log
+            console.log('addressFirst-->', address);
+        } 
+        
         if (route.params?.adress) {
             setAddress(route.params.address);
+
+            //! Delete cosole.log
+            console.log('route.params.address-->', route.params.address);
         }
     }, [route.params]);
 
@@ -49,13 +62,19 @@ const CreatePostsScreen: FC<CreatePostsScreenProps> = ({ navigation, route }) =>
     };
 
     const handleLocationPress = () => {
+        // Navigate to MapScreen, passing the location to show on the map
         navigation.navigate('Map', { currentLocation: location });
     };
 
 
     const onPublishButton = () => {
-        if (picture && name && location) {
-            navigation.navigate('DefaultPostsScreen', { picture, name, location });
+        if (picture && name && location || address) {
+            const post = [{ picture, name, location, address }];
+
+            navigation.navigate('Posts', { post: [picture, name, location, address] });
+
+            //! Delete cosole.log
+            console.log('POST', post);
         }
     }
 

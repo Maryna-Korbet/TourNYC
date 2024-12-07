@@ -79,6 +79,9 @@ const CameraScreen: FC<CameraScreenProps> = ({ navigation }) => {
 
             let loc = await Location.getCurrentPositionAsync({});
             setLocation(loc);
+
+            //! Delete cosole.log
+            console.log(loc);
         }
 
         getCurrentLocation();
@@ -141,6 +144,10 @@ const CameraScreen: FC<CameraScreenProps> = ({ navigation }) => {
             const photo = await cameraRef.current.takePictureAsync();
             setPicture(photo.uri);
             navigation.navigate('CreatePost', { picture: photo.uri, location });
+            //! Delete cosole.log
+            console.log("photo.uri--->", photo.uri);
+            console.log("location--->", location);
+
         } catch (error) {
             alert('Error taking or saving photo!');
         }

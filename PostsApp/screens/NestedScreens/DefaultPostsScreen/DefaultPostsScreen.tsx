@@ -6,11 +6,17 @@ import {
 } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 
+import LocationButton from 'components/buttons/LocationButton';
+import CommentIcon from 'icons/CommentIcon';
+
 import { styles } from './DefaultPostsScreen.styles';
+
 
 
 type Post = {
     picture: string,
+    name: string,
+    address?: string,
     location?: {
         coords: {
             latitude: number,
@@ -21,28 +27,31 @@ type Post = {
 
 type DefaultPostsScreenProps = {
     route: any,
+    navigation: any,
 }
 
-const DefaultPostsScreen: FC<DefaultPostsScreenProps> = ({ route }) => {
-    const { posts } = route.params || {};
+const DefaultPostsScreen: FC<DefaultPostsScreenProps> = ({ route, navigation }) => {
     const [postList, setPostList] = useState<Post[]>([]);
 
     useEffect(() => {
-        if (posts && posts.length > 0) {
-            setPostList(posts);
+        if (route.params?.post) {
+            const formattedPost = {
+                picture: route.params.post[0],
+                name: route.params.post[1],
+                location: route.params.post[2],
+                address: route.params.post[3],
+            };
+            // Convert into an array of objects
+            setPostList([formattedPost]);
+            
+            //! Delete cosole.log
+            console.log('Formatted post:', formattedPost);
         }
-    }, [posts]);
+    }, [route.params?.post]);
 
-    const picturesCoordinates = () => {
-        return postList.map((post) => {
-            if (post.location?.coords) {
-                const { latitude, longitude } = post.location.coords;
-                return `Latitude: ${latitude}, Longitude: ${longitude}`;
-            }
-            return `No location data available`;
-        })
-            .join('\n');
-    }
+    const handlePostLocation = () => {
+        navigation.navigate('Map', { location: postList[0].location });
+    };
 
     return (
         <View style={styles.container}>
@@ -51,14 +60,34 @@ const DefaultPostsScreen: FC<DefaultPostsScreenProps> = ({ route }) => {
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item }) => (
                     <View style={styles.postContainer}>
-                        <Image
-                            source={{ uri: item.picture }}
-                            style={styles.postPicture}
-                        />
-                        <View >
-                            <Text style={styles.picturesLoationTitle}>Location:</Text>
-                            <Text style={styles.picturesLoationText}>{picturesCoordinates()}</Text>
+                        <View style={styles.postPictureContainer}>
+                            <Image
+                                source={{ uri: item.picture }}
+                                style={styles.postPicture}
+                            />
                         </View>
+                    
+                        <View>
+                            <Text style={styles.postTitle}>{item.name}</Text>
+                        </View>
+                        
+                        <View style={styles.postInfoContainer}>
+                            <View style={styles.postCommentContainer}>
+                                <CommentIcon
+                                    style={styles.postCommentIcon}
+                                />
+                                <Text style={styles.postCommentText}>0</Text>
+                            </View>
+                            
+                            <View style={styles.postLocationContainer}>
+                                <LocationButton
+                                    style={styles.postLocationButton}
+                                    onLocation={handlePostLocation}
+                                />
+                                <Text style={styles.picturesLoationText}>{item.address || 'Not provided'}</Text>
+                            </View>
+                        </View>
+                        
                     </View>
                 )}
             />
@@ -67,3 +96,4 @@ const DefaultPostsScreen: FC<DefaultPostsScreenProps> = ({ route }) => {
 };
 
 export default DefaultPostsScreen;
+

@@ -152,7 +152,7 @@ const CameraScreen: FC<CameraScreenProps> = ({ navigation }) => {
             alert('Error taking or saving photo!');
         }
     };
- 
+
     return (
         <View style={styles.container}>
             <CameraView

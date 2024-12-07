@@ -72,10 +72,14 @@ const CreatePostsScreen: FC<CreatePostsScreenProps> = ({ navigation, route }) =>
             const post = [{ picture, name, location, address }];
 
             navigation.navigate('Posts', { post: [picture, name, location, address] });
-
+            
             //! Delete cosole.log
             console.log('POST', post);
         }
+        setPicture(null);
+        setName('');
+        setLocation(null);
+        setAddress(null);
     }
 
     return (

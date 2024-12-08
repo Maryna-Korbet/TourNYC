@@ -47,7 +47,7 @@ const CreatePostsScreen: FC<CreatePostsScreenProps> = ({ navigation, route }) =>
 
             //! Delete cosole.log
             console.log('addressFirst-->', address);
-        } 
+        }
         
         if (route.params?.adress) {
             setAddress(route.params.address);
@@ -71,8 +71,12 @@ const CreatePostsScreen: FC<CreatePostsScreenProps> = ({ navigation, route }) =>
         if (picture && name && location || address) {
             const post = [{ picture, name, location, address }];
 
-            navigation.navigate('Posts', { post: [picture, name, location, address] });
-            
+            // Navigate to DefaultPostsScreen, passing the post
+            navigation.navigate('DefaultPostsStack', {
+                screen: 'DefaultPosts',
+                params: { post: [picture, name, location, address] },
+            });
+
             //! Delete cosole.log
             console.log('POST', post);
         }

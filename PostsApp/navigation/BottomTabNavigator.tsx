@@ -3,10 +3,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Feather from '@expo/vector-icons/Feather';
 
 import TabNavigator from '../components/navigation/TabNavigator';
-import PostsScreen from '../screens/NestedScreens/DefaultPostsScreen/DefaultPostsScreen';
 import CreatePostNavigator from '../navigation/CreatePostNavigator';
 import ProfileScreen from '../screens/MainScreen/ProfileScreen/ProfileScreen';
-import MapScreen from '../screens/NestedScreens/MapScreen/MapScreen';
+import PostsNavigator from './PostsNavigator';
 
 import IoniconsElement from '../components/icons/IoniconsElement';
 import IconButton from '../components/buttons/IconButton';
@@ -16,13 +15,21 @@ import ArrowLeftIcon from '../icons/ArrowLeftIcon';
 import { colors } from '../styles/GlobalStyles';
 
 
-const Tab = createBottomTabNavigator();
+
+type  BottomTabParamList = {
+    DefaultPostsStack: undefined;
+    CreatePostsStack: undefined;
+    Profile: undefined;
+};
+
+const Tab = createBottomTabNavigator<BottomTabParamList>();
 
 const BottomTabNavigator: FC = () => {
     return (
         <TabNavigator
-            initialRouteName="Posts"
+            initialRouteName="DefaultPostsStack"
             screenOptions={{
+                tabBarLabel: '',
                 headerTitleStyle: {
                     fontFamily: 'Roboto-Bold',
                     fontSize: 17,
@@ -32,26 +39,25 @@ const BottomTabNavigator: FC = () => {
                 headerTitleAlign: 'center',
                 headerRightContainerStyle: { paddingRight: 16 },
                 headerLeftContainerStyle: { paddingLeft: 16 },
-                tabBarLabel: '',
+                tabBarIcon: () => (
+                    <IoniconsElement
+                        IconComponent={Feather}
+                        name="grid"
+                        size={24}
+                        color={colors.black}
+                    />
+                ),
             }}
         >
             <Tab.Screen
-                name="Posts"
-                component={PostsScreen}
+                name="DefaultPostsStack"
+                component={PostsNavigator}
                 options={{
                     title: 'Publications',
                     headerRight: () => (
                         <IconButton
                             icon={<LogOutIcon />}
                             onPress={() => console.log('Log Out')}
-                        />
-                    ),
-                    tabBarIcon: () => (
-                        <IoniconsElement
-                            IconComponent={Feather}
-                            name="grid"
-                            size={24}
-                            color={colors.black}
                         />
                     ),
                 }}

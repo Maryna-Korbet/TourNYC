@@ -1,15 +1,16 @@
 import { createStackNavigator } from '@react-navigation/stack';
+
 import RegistrationScreen from '../screens/AuthScreens/RegistrationScreens/RegistrationScreen';
 import LoginScreen from '../screens/AuthScreens/LoginScreen/LoginScreen';
 import BottomTabNavigator from './BottomTabNavigator';
-
-const Stack = createStackNavigator();
 
 export type StackParamList = {
     Home: undefined,
     Login: undefined,
     Registration: undefined,
 };
+
+const Stack = createStackNavigator<StackParamList>();
 
 
 const StackNavigator = () => {
@@ -22,7 +23,7 @@ const StackNavigator = () => {
                 component={LoginScreen}
                 options={{
                     presentation: 'transparentModal',
-                    headerShown: false,  
+                    headerShown: false,
                 }}
             />
             <Stack.Screen

@@ -33,6 +33,9 @@ type DefaultPostsScreenProps = {
 const DefaultPostsScreen: FC<DefaultPostsScreenProps> = ({ route, navigation }) => {
     const [postList, setPostList] = useState<Post[]>([]);
 
+    //! Delete cosole.log
+    console.log("route.params-->", route.params);
+
     useEffect(() => {
         if (route.params?.post) {
             const formattedPost = {
@@ -41,8 +44,9 @@ const DefaultPostsScreen: FC<DefaultPostsScreenProps> = ({ route, navigation }) 
                 location: route.params.post[2],
                 address: route.params.post[3],
             };
-            // Convert into an array of objects
-            setPostList([formattedPost]);
+            
+            // Add the new post to the existing array
+            setPostList((prevPosts) => [...prevPosts, formattedPost]);
             
             //! Delete cosole.log
             console.log('Formatted post:', formattedPost);
@@ -53,44 +57,54 @@ const DefaultPostsScreen: FC<DefaultPostsScreenProps> = ({ route, navigation }) 
         navigation.navigate('Map', { location: postList[0].location });
     };
 
+    const handlePostComment = () => {
+        navigation.navigate('Comments', { post: postList[0] });
+        navigation.setOptions({ headerShown: false });
+    };
+
     return (
         <View style={styles.container}>
-            <FlatList
-                data={postList}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item }) => (
-                    <View style={styles.postContainer}>
-                        <View style={styles.postPictureContainer}>
-                            <Image
-                                source={{ uri: item.picture }}
-                                style={styles.postPicture}
-                            />
-                        </View>
+            {postList.length === 0 ? (
+                <Text>No posts available</Text>
+            ) : (
+                <FlatList
+                    data={postList}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item }) => (
+                        <View style={styles.postContainer}>
+                            <View style={styles.postPictureContainer}>
+                                <Image
+                                    source={{ uri: item.picture }}
+                                    style={styles.postPicture}
+                                />
+                            </View>
                     
-                        <View>
-                            <Text style={styles.postTitle}>{item.name}</Text>
-                        </View>
-                        
-                        <View style={styles.postInfoContainer}>
-                            <View style={styles.postCommentContainer}>
-                                <CommentIcon
-                                    style={styles.postCommentIcon}
-                                />
-                                <Text style={styles.postCommentText}>0</Text>
+                            <View>
+                                <Text style={styles.postTitle}>{item.name}</Text>
                             </View>
+                        
+                            <View style={styles.postInfoContainer}>
+                                <View style={styles.postCommentContainer}>
+                                    <CommentIcon
+                                        style={styles.postCommentIcon}
+                                        onPress={handlePostComment}
+                                    />
+                                    <Text style={styles.postCommentText}>0</Text>
+                                </View>
                             
-                            <View style={styles.postLocationContainer}>
-                                <LocationButton
-                                    style={styles.postLocationButton}
-                                    onLocation={handlePostLocation}
-                                />
-                                <Text style={styles.picturesLoationText}>{item.address || 'Not provided'}</Text>
+                                <View style={styles.postLocationContainer}>
+                                    <LocationButton
+                                        style={styles.postLocationButton}
+                                        onLocation={handlePostLocation}
+                                    />
+                                    <Text style={styles.picturesLoationText}>{item.address || 'Not provided'}</Text>
+                                </View>
                             </View>
-                        </View>
                         
-                    </View>
-                )}
-            />
+                        </View>
+                    )}
+                />
+            )}
         </View>
     );
 };

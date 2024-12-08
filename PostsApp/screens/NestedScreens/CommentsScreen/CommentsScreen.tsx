@@ -5,7 +5,12 @@ import {
 } from 'react-native';
 
 
-const CommentsScreen: FC = () => {
+type CommentsScreenProps = {
+    navigation: any,
+};
+
+const CommentsScreen: FC<CommentsScreenProps> = ({ navigation }) => {
+
     return (
         <View> 
             <Text>Comments</Text>

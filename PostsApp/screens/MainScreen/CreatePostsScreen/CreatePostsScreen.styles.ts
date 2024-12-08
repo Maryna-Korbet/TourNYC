@@ -58,6 +58,9 @@ export const styles = StyleSheet.create({
         marginTop: 16,
     },
     nameInput: {
+        flex: 1,
+        flexWrap: 'wrap',
+        overflow: 'visible',
         width: "100%",
         fontFamily: 'Roboto-Regular',
         fontSize: 16,
@@ -71,6 +74,9 @@ export const styles = StyleSheet.create({
         flexDirection: "row",
     },
     locacionInput: {
+        flex: 1,
+        flexWrap: 'wrap',
+        overflow: 'visible',
         width: 315,
         fontFamily: 'Roboto-Regular',
         fontSize: 16,

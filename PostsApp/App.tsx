@@ -1,7 +1,11 @@
 import "react-native-gesture-handler";
 import React, { useEffect } from 'react';
+import { Provider } from "react-redux";
+import { store, persistor } from "./redux/store";
+import { PersistGate } from 'redux-persist/integration/react';
 import {
   ActivityIndicator,
+  Text,
 } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
@@ -9,7 +13,8 @@ import * as SplashScreen from 'expo-splash-screen';
 import StackNavigator from "./navigation/StackNavigator";
 
 
-SplashScreen.preventAutoHideAsync(); // Keep the splash screen visible while we fetch resources
+// Keep the splash screen visible while we fetch resources
+SplashScreen.preventAutoHideAsync(); 
 
 export default function App() {
   
@@ -22,17 +27,26 @@ export default function App() {
 
   useEffect(() => {
     if (fontsloaded) {
-      SplashScreen.hideAsync(); // Hide the splash screen after font loading
+      // Hide the splash screen after font loading
+      SplashScreen.hideAsync(); 
     }
   }, [fontsloaded]);
 
   if (!fontsloaded) {
-    return <ActivityIndicator size={"large"} color={"#FF6C00"}/>; // Show a loading indicator while fonts are loading
+    // Show a loading indicator while fonts are loading
+    return <ActivityIndicator size={"large"} color={"#FF6C00"}/>; 
   }
 
   return (
-    <NavigationContainer>
-        <StackNavigator />
-    </NavigationContainer>
+    <Provider store={store}>
+      <PersistGate
+        loading={<Text>Loading...</Text>}
+        persistor={persistor}
+      >
+        <NavigationContainer>
+          <StackNavigator />
+        </NavigationContainer>
+      </PersistGate>
+    </Provider>
   )
 };

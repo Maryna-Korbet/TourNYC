@@ -3,13 +3,11 @@ import React, { useEffect } from 'react';
 import { Provider } from "react-redux";
 import { store, persistor } from "./redux/store";
 import { PersistGate } from 'redux-persist/integration/react';
-import { NavigationContainer } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import StackNavigator from "./navigation/StackNavigator";
 
 import Loader from "components/loader/Loader";
-
+import AppNavigationContainer from "./navigation/AppNavigationContainer";
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync(); 
@@ -41,9 +39,7 @@ export default function App() {
         loading={<Loader />}
         persistor={persistor}
       >
-        <NavigationContainer>
-          <StackNavigator />
-        </NavigationContainer>
+        <AppNavigationContainer />
       </PersistGate>
     </Provider>
   )

@@ -10,10 +10,15 @@ import {
     Image,
 } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
+
+import { useDispatch } from 'react-redux';
+import { loginDB } from '../../../services/auth';
+
 import { usePasswordToggle } from '../../../hooks/usePasswordToggle';
 import ShowButton from '../../../components/buttons/ShowButton';
 import Input from '../../../components/forms/Input';
 import Button from '../../../components/buttons/Button';
+
 import { styles } from './LoginScreen.styles';
 
 
@@ -45,7 +50,7 @@ const LoginScreen: FC<LoginScreenProps> = ({navigation, route}) => {
     const [inputQuery, setInputQuery] = useState<LoginInputProps>({ email: '', password: '' });
     const [error, setError] = useState<LoginInputProps>({ email: '', password: '' });
     const { isPasswordVisible, togglePasswordVisibility } = usePasswordToggle();
-
+    const dispatch = useDispatch();
 
     const handleValueChange = (value: string, input: "email" | "password") => {
         setInputQuery(prev => ({ ...prev, [input]: value }));
@@ -83,13 +88,18 @@ const LoginScreen: FC<LoginScreenProps> = ({navigation, route}) => {
         return isValid;
     };
 
-    const onLogin = () => {
+    const onLogin = async () => {
         Keyboard.dismiss();
 
         if (!validate()) return;
 
         if (validate()) {
-            navigation.navigate('Home');
+            try {
+                await loginDB({ email: inputQuery.email, password: inputQuery.password }, dispatch);
+                navigation.navigate('Home');
+            } catch (err) {
+                console.error('Login error:', err);
+            }
         }
     };
 

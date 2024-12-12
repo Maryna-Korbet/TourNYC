@@ -9,6 +9,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import Loader from "components/loader/Loader";
 import AppNavigationContainer from "./navigation/AppNavigationContainer";
 
+
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync(); 
 
@@ -42,5 +43,5 @@ export default function App() {
         <AppNavigationContainer />
       </PersistGate>
     </Provider>
-  )
+  );
 };

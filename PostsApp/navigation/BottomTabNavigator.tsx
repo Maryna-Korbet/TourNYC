@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { useDispatch } from 'react-redux';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Feather from '@expo/vector-icons/Feather';
 
@@ -6,6 +7,8 @@ import TabNavigator from '../components/navigation/TabNavigator';
 import CreatePostNavigator from '../navigation/CreatePostNavigator';
 import ProfileScreen from '../screens/MainScreen/ProfileScreen/ProfileScreen';
 import PostsNavigator from './PostsNavigator';
+
+import { logoutDB } from '../services/auth';
 
 import IoniconsElement from '../components/icons/IoniconsElement';
 import IconButton from '../components/buttons/IconButton';
@@ -25,6 +28,8 @@ type  BottomTabParamList = {
 const Tab = createBottomTabNavigator<BottomTabParamList>();
 
 const BottomTabNavigator: FC = () => {
+    const dispatch = useDispatch(); 
+
     return (
         <TabNavigator
             initialRouteName="DefaultPostsStack"
@@ -57,7 +62,7 @@ const BottomTabNavigator: FC = () => {
                     headerRight: () => (
                         <IconButton
                             icon={<LogOutIcon />}
-                            onPress={() => console.log('Log Out')}
+                            onPress={() => logoutDB(dispatch)}
                         />
                     ),
                 }}
@@ -91,7 +96,7 @@ const BottomTabNavigator: FC = () => {
                     headerRight: () => (
                         <IconButton
                             icon={<LogOutIcon />}
-                            onPress={() => console.log('Log Out')}
+                            onPress={() => logoutDB(dispatch)}
                         />
                     ),
                     tabBarIcon: ({ focused }) => (

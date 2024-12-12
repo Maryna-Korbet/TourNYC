@@ -1,40 +1,30 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { UserData } from '../../utils/authTypes';
+
+
+interface UserState {
+    userInfo: UserData | null;
+};
+
+const initialState: UserState = {
+    userInfo: null,
+};
 
 export const authSlice = createSlice({
     name: 'auth',
-    initialState: {
-        userId: null,
-        nickname: null,
-        login: null,
-        email: null,
-        avatar: null,
-        token: null,
-        isAuth: false,
-        error: null,
-        isLoading: false,
-    },
+    initialState,
     reducers: {
-        login: (state, action) => {
-            state.userId = action.payload.userId;
-            state.nickname = action.payload.nickname;
-            state.login = action.payload.login;
-            state.email = action.payload.email;
-            state.avatar = action.payload.avatar;
-            state.token = action.payload.token;
-            state.isAuth = true;
-            state.error = null;
-            state.isLoading = false;
+        setUserInfo(state, action: PayloadAction<UserState['userInfo']>) {
+            state.userInfo = action.payload;
         },
-        logout: (state) => {
-            state.userId = null;
-            state.nickname = null;
-            state.login = null;
-            state.email = null;
-            state.avatar = null;
-            state.token = null;
-            state.isAuth = false;
-            state.error = null;
-            state.isLoading = false;
+        clearUserInfo(state) {
+            state.userInfo = null;
         },
     },
 });
+
+// Export actions for use in components
+export const { setUserInfo, clearUserInfo } = authSlice.actions;
+
+// Export reducer to connect to Store
+export default authSlice.reducer;

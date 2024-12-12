@@ -17,6 +17,7 @@ import ShowButton from '../../../components/buttons/ShowButton';
 import Input from '../../../components/forms/Input';
 import Button from '../../../components/buttons/Button';
 import { styles } from './RegistrationScreen.styles';
+import { registerDB } from 'services/auth';
 
 
 type RootStackParamList = {
@@ -128,7 +129,14 @@ const RegistrationScreen: FC<RegistrationScreenProps> = ({ navigation, route }) 
 		if (!validate()) return;
 
 		if (validate()) {
+			//!Delete console.log
 			console.log("Credentials", inputQuery.login, inputQuery.email, inputQuery.password);
+
+			registerDB({
+				login: inputQuery.login,
+				email: inputQuery.email,
+				password: inputQuery.password
+			});
 			Alert.alert("Registration", "Registeration Successful");
 		}
 	};

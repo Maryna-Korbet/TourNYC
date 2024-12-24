@@ -1,3 +1,4 @@
+import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useSelector } from 'react-redux';
 
@@ -22,7 +23,7 @@ const StackNavigator = () => {
     
     return (
         <Stack.Navigator
-            initialRouteName="Login"
+        /* initialRouteName="Login" */
         >
             {!user ? (
                 //if user is not logged in go to Login

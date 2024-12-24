@@ -51,7 +51,8 @@ export const getUser = async (userId: string) => {
 // A function for recording user data in Firestore
 export const updateUserInFirestore = async (uid: string, data: any) => {
     try {
-        await setDoc(doc(db, 'users', uid), data, { merge: true }); // merge: true - для оновлення існуючого документа або створення нового
+        // merge: true -to update an existing document or create a new one
+        await setDoc(doc(db, 'users', uid), data, { merge: true }); 
         console.log('User data updated to Firestore:', uid);
     } catch (error) {
         console.error('Error saving user data to Firestore:', error);

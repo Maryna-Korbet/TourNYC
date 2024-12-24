@@ -33,7 +33,7 @@ interface RegistrationScreenProps {
 };
 
 interface RegistrationInputProps{
-	login: string,
+	displayName: string,
 	email: string,
 	password: string,
 };
@@ -41,8 +41,8 @@ interface RegistrationInputProps{
 const { width: SCREEN_WIDTH } = Dimensions.get('screen');
 
 const RegistrationScreen: FC<RegistrationScreenProps> = ({ navigation, route }) => {
-	const [inputQuery, setInputQuery] = useState<RegistrationInputProps>({ login: '', email: '', password: '' });
-	const [error, setError] = useState<RegistrationInputProps>({ login: '', email: '', password: '' });
+	const [inputQuery, setInputQuery] = useState<RegistrationInputProps>({ displayName: '', email: '', password: '' });
+	const [error, setError] = useState<RegistrationInputProps>({ displayName: '', email: '', password: '' });
 	const { isPasswordVisible, togglePasswordVisibility } = usePasswordToggle();
 	const [isFocused, setIsFocused] = useState(false);
 	const [isKeyboardVisible, setKeyboardVisible] = useState(false);
@@ -69,12 +69,12 @@ const RegistrationScreen: FC<RegistrationScreenProps> = ({ navigation, route }) 
 		setIsFocused(false);
 	}
 
-	const handleValueChange = (value: string, input: "login" | "email" | "password") => {
+	const handleValueChange = (value: string, input: "displayName" | "email" | "password") => {
 		setInputQuery(prev => ({ ...prev, [input]: value }));
 
 		// Remove error if input is valid
-		if (input === "login" && value.length >= 3) {
-			setError(prev => ({ ...prev, login: '' }));
+		if (input === "displayName" && value.length >= 3) {
+			setError(prev => ({ ...prev, displayName: '' }));
 		};
 
 		if (input === "email" && /\S+@\S+\.\S+/.test(value)) {
@@ -88,13 +88,13 @@ const RegistrationScreen: FC<RegistrationScreenProps> = ({ navigation, route }) 
 
 	const validate = () => {
 		let isValid = true;
-		const newErrors = { login: '', email: '', password: '' };
+		const newErrors = { displayName: '', email: '', password: '' };
 		
-		if (!inputQuery.login) {
+		if (!inputQuery.displayName) {
 			isValid = false;
-			newErrors.login = 'Login name is required';
-		} else if (inputQuery.login.length < 3) {
-			newErrors.login = 'Login name must be at least 3 characters';
+			newErrors.displayName = 'Display name name is required';
+		} else if (inputQuery.displayName.length < 3) {
+			newErrors.displayName = 'Display name must be at least 3 characters';
 			isValid = false;
 		}
         
@@ -130,10 +130,10 @@ const RegistrationScreen: FC<RegistrationScreenProps> = ({ navigation, route }) 
 
 		if (validate()) {
 			//!Delete console.log
-			console.log("Credentials", inputQuery.login, inputQuery.email, inputQuery.password);
+			console.log("Credentials", inputQuery.displayName, inputQuery.email, inputQuery.password);
 
 			registerDB({
-				login: inputQuery.login,
+				displayName: inputQuery.displayName,
 				email: inputQuery.email,
 				password: inputQuery.password
 			});
@@ -178,13 +178,13 @@ const RegistrationScreen: FC<RegistrationScreenProps> = ({ navigation, route }) 
 						
 							<View style={styles.innerContainer}>
 								<Input
-									value={inputQuery.login}
-									error={error.login}
+									value={inputQuery.displayName}
+									error={error.displayName}
 									outerStyles={styles.outerStyles}
-									placeholder="Login name"
+									placeholder="Display name"
 									autofocus={true}
 									autoCapitalize='none'
-									onValueChange={(value) => handleValueChange(value, "login")}
+									onValueChange={(value) => handleValueChange(value, "displayName")}
 									placeholderTextColor={isFocused ? '#FF6C00' : '#BDBDBD'}
 								/>
 						

@@ -11,6 +11,7 @@ import {
 	Dimensions,
 	Image,
 } from 'react-native';
+import { launchImageLibrary } from 'react-native-image-picker';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { usePasswordToggle } from '../../../hooks/usePasswordToggle';
 import ShowButton from '../../../components/buttons/ShowButton';
@@ -18,6 +19,7 @@ import Input from '../../../components/forms/Input';
 import Button from '../../../components/buttons/Button';
 import { styles } from './RegistrationScreen.styles';
 import { registerDB } from 'services/auth';
+
 
 
 type RootStackParamList = {
@@ -33,6 +35,7 @@ interface RegistrationScreenProps {
 };
 
 interface RegistrationInputProps{
+	profilePhoto: string | undefined,
 	displayName: string,
 	email: string,
 	password: string,
@@ -41,8 +44,8 @@ interface RegistrationInputProps{
 const { width: SCREEN_WIDTH } = Dimensions.get('screen');
 
 const RegistrationScreen: FC<RegistrationScreenProps> = ({ navigation, route }) => {
-	const [inputQuery, setInputQuery] = useState<RegistrationInputProps>({ displayName: '', email: '', password: '' });
-	const [error, setError] = useState<RegistrationInputProps>({ displayName: '', email: '', password: '' });
+	const [inputQuery, setInputQuery] = useState<RegistrationInputProps>({ displayName: '', email: '', password: '', profilePhoto: '' });
+	const [error, setError] = useState<RegistrationInputProps>({ displayName: '', email: '', password: '', profilePhoto: '' });
 	const { isPasswordVisible, togglePasswordVisibility } = usePasswordToggle();
 	const [isFocused, setIsFocused] = useState(false);
 	const [isKeyboardVisible, setKeyboardVisible] = useState(false);
@@ -88,11 +91,11 @@ const RegistrationScreen: FC<RegistrationScreenProps> = ({ navigation, route }) 
 
 	const validate = () => {
 		let isValid = true;
-		const newErrors = { displayName: '', email: '', password: '' };
+		const newErrors = { displayName: '', email: '', password: '', profilePhoto: '' };
 		
 		if (!inputQuery.displayName) {
 			isValid = false;
-			newErrors.displayName = 'Display name name is required';
+			newErrors.displayName = 'Display name is required';
 		} else if (inputQuery.displayName.length < 3) {
 			newErrors.displayName = 'Display name must be at least 3 characters';
 			isValid = false;
@@ -118,10 +121,53 @@ const RegistrationScreen: FC<RegistrationScreenProps> = ({ navigation, route }) 
 		return isValid;
 	};
 
+	/* const onChangeavatar = () => {
+		launchImageLibrary(
+			{
+				//select only photos
+				mediaType: 'photo',
+				quality: 1, 
+			},
+			(response) => {
+				if (response.assets && response.assets.length > 0) {
+					const uri = response.assets[0].uri;
+					setInputQuery(prev => ({ ...prev, profilePhoto: uri }));
+					Alert.alert("Avatar selected", "You have successfully selected an avatar.");
+				} else {
+					Alert.alert('You will choose an avatar next time'); 
+				}
+			}
+		);
+	}; */
+
 	const onChangeavatar = () => {
-		console.log('Change avatar');
-		Alert.alert("Change avatar", "Avatar change Successful");
-	};
+    launchImageLibrary(
+        {
+            mediaType: 'photo',
+            quality: 1,
+        },
+        (response) => {
+            console.log(response); // Check the structure of the response
+            if (response.didCancel) {
+                Alert.alert('You cancelled the image picker');
+                return;
+            }
+
+            if (response.errorCode) {
+                Alert.alert('Error', response.errorMessage || 'An error occurred');
+                return;
+            }
+
+            if (response.assets && response.assets.length > 0) {
+                const uri = response.assets[0].uri;
+                setInputQuery(prev => ({ ...prev, profilePhoto: uri }));
+                Alert.alert("Avatar selected", "You have successfully selected an avatar.");
+            } else {
+                Alert.alert('No avatar selected');
+            }
+        }
+    );
+};
 
 	const onRegistation = () => {
 		Keyboard.dismiss();
@@ -130,9 +176,10 @@ const RegistrationScreen: FC<RegistrationScreenProps> = ({ navigation, route }) 
 
 		if (validate()) {
 			//!Delete console.log
-			console.log("Credentials", inputQuery.displayName, inputQuery.email, inputQuery.password);
+			console.log("Credentials", inputQuery.displayName, inputQuery.email, inputQuery.password, inputQuery.profilePhoto);
 
 			registerDB({
+				profilePhoto: inputQuery.profilePhoto !== undefined ? inputQuery.profilePhoto : '',
 				displayName: inputQuery.displayName,
 				email: inputQuery.email,
 				password: inputQuery.password

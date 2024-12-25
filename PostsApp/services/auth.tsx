@@ -12,20 +12,21 @@ import { addUser, getUser, updateUserInFirestore } from './firestore';
 
 // Types for registration and authorization
 interface AuthCredentials {
+    profilePhoto: string;
     displayName: string;
     email: string;
     password: string;
 };
 
 // New user registration function
-export const registerDB = async ({ email, password, displayName }: AuthCredentials) => {
+export const registerDB = async ({ email, password, displayName, profilePhoto }: AuthCredentials) => {
     try {
         const credentials = await createUserWithEmailAndPassword(auth, email, password);
         const user = credentials.user;
 
-        await updateProfile(user, { displayName });
+        await updateProfile(user, { displayName, photoURL: profilePhoto });
 
-        await addUser(user.uid, { uid: user.uid, email: user.email || '', displayName: user.displayName || '' })
+        await addUser(user.uid, { uid: user.uid, email: user.email || '', displayName: user.displayName || '', profilePhoto: user.photoURL || "" });
     } catch (error) {
         console.log('SIGNUP ERROR:', error)
     };

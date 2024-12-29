@@ -200,6 +200,7 @@ const RegistrationScreen: FC<RegistrationScreenProps> = ({ navigation, route }) 
 	};
 	
 	const onRegistation = () => {
+		setIsUploading(true);
 		Keyboard.dismiss();
 
 		if (!validate()) return;
@@ -211,7 +212,7 @@ const RegistrationScreen: FC<RegistrationScreenProps> = ({ navigation, route }) 
 				email: inputQuery.email,
 				password: inputQuery.password
 			});
-			Alert.alert("Registration", "Registeration Successful");
+			setIsUploading(false);
 		}
 	};
 

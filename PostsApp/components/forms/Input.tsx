@@ -22,6 +22,7 @@ type InputProps = {
     autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters',
     icon?: React.ReactNode,
     onValueChange: (value: string) => void,
+    onEndEditing?: () => void,
 };
 
 const Input: FC<InputProps> = ({
@@ -37,6 +38,7 @@ const Input: FC<InputProps> = ({
     autoCapitalize = 'none',
     icon,
     onValueChange,
+    onEndEditing,
     ...props
 }) => {
     const [isFocused, setIsFocused] = useState(false);
@@ -64,6 +66,8 @@ const Input: FC<InputProps> = ({
                 onFocus={onFocus}
                 onBlur={onBlur}
                 onChangeText={onValueChange}
+                onEndEditing={onEndEditing}
+                {...props}
             />  
             {rightButton}
         </View>

@@ -2,23 +2,32 @@ import React, { FC, useState, useEffect } from 'react';
 import {
     Text,
     View,
-    TouchableOpacity,
     Platform,
     Keyboard,
-    TouchableWithoutFeedback,
+	TouchableWithoutFeedback,
+	TouchableOpacity,
 	KeyboardAvoidingView,
 	Alert,
 	Dimensions,
 	Image,
+	ActivityIndicator,
 } from 'react-native';
-import { launchImageLibrary } from 'react-native-image-picker';
+import { useDispatch, useSelector } from "react-redux";
+import * as ImagePicker from 'expo-image-picker';
 import { StackNavigationProp } from '@react-navigation/stack';
+
+import { RootState } from "../../../redux/store";
+import { setUserInfo } from "../../../redux/auth/authReducer";
+import { registerDB } from 'services/auth';
+import { getImageUrl, uploadImage } from "../../../services/firestore";
+
 import { usePasswordToggle } from '../../../hooks/usePasswordToggle';
+
 import ShowButton from '../../../components/buttons/ShowButton';
 import Input from '../../../components/forms/Input';
 import Button from '../../../components/buttons/Button';
 import { styles } from './RegistrationScreen.styles';
-import { registerDB } from 'services/auth';
+import { colors } from '../../../styles/GlobalStyles';
 
 
 
@@ -35,7 +44,7 @@ interface RegistrationScreenProps {
 };
 
 interface RegistrationInputProps{
-	profilePhoto: string | undefined,
+	profilePhoto: string,
 	displayName: string,
 	email: string,
 	password: string,
@@ -44,8 +53,14 @@ interface RegistrationInputProps{
 const { width: SCREEN_WIDTH } = Dimensions.get('screen');
 
 const RegistrationScreen: FC<RegistrationScreenProps> = ({ navigation, route }) => {
+	const dispatch = useDispatch();
+
 	const [inputQuery, setInputQuery] = useState<RegistrationInputProps>({ displayName: '', email: '', password: '', profilePhoto: '' });
 	const [error, setError] = useState<RegistrationInputProps>({ displayName: '', email: '', password: '', profilePhoto: '' });
+	const [selectedImage, setSelectedImage] = useState<string | null>(null);
+	const [isUploading, setIsUploading] = useState(false);
+
+	const userInfo = useSelector((state: RootState) => state.auth.userInfo);
 	const { isPasswordVisible, togglePasswordVisibility } = usePasswordToggle();
 	const [isFocused, setIsFocused] = useState(false);
 	const [isKeyboardVisible, setKeyboardVisible] = useState(false);
@@ -64,6 +79,12 @@ const RegistrationScreen: FC<RegistrationScreenProps> = ({ navigation, route }) 
 		};
 	}, []);
 
+	useEffect(() => {
+		if (userInfo && userInfo.profilePhoto) {
+			setSelectedImage(userInfo.profilePhoto);
+		}
+	}, [userInfo]);
+
 	const onFocus = () => {
 		setIsFocused(true);
 	}
@@ -71,6 +92,63 @@ const RegistrationScreen: FC<RegistrationScreenProps> = ({ navigation, route }) 
 	const onBlur = () => {
 		setIsFocused(false);
 	}
+
+	//Uploading the image and getting the URL
+	const handleImageUpload = async (
+		userId: string,
+		file: File | Blob,
+		fileName: string
+	) => {
+		try {
+			const imageRef = await uploadImage(userId, file, fileName);
+			const imageUrl = await getImageUrl(imageRef);
+
+			if (!imageUrl) {
+				throw new Error('Failed to retrieve image URL');
+			}
+		
+			return imageUrl;
+		} catch (error) {
+			Alert.alert("Image upload failed");
+			return null;
+		}
+	};
+	
+	//Selecting an image from the media library and uploading it
+	const pickImage = async () => {
+		try {
+			setIsUploading(true);
+			const { granted } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+			if (!granted) throw new Error("Media library access denied");
+
+			const result = await ImagePicker.launchImageLibraryAsync({
+				mediaTypes: ImagePicker.MediaTypeOptions.Images,
+				allowsEditing: true,
+				quality: 1,
+			});
+
+			if (!result.canceled) {
+				const uri = result.assets[0].uri;
+				setSelectedImage(uri);
+
+				const response = await fetch(uri);
+				const file = await response.blob();
+				const fileName = uri.split('/').pop() || `image_${Date.now()}`;
+				const imageFile = new File([file], fileName, { type: file.type });
+
+				if (userInfo) {
+					const imageUrl = await handleImageUpload(userInfo.uid, imageFile, fileName);
+					if (imageUrl) {
+						dispatch(setUserInfo({ ...userInfo, profilePhoto: imageUrl }));
+					}
+				}
+			}
+		} catch (error) {
+			Alert.alert("Error", "Unable to upload the selected image. Please try again.");
+		} finally {
+			setIsUploading(false);
+		}
+	};
 
 	const handleValueChange = (value: string, input: "displayName" | "email" | "password") => {
 		setInputQuery(prev => ({ ...prev, [input]: value }));
@@ -92,7 +170,7 @@ const RegistrationScreen: FC<RegistrationScreenProps> = ({ navigation, route }) 
 	const validate = () => {
 		let isValid = true;
 		const newErrors = { displayName: '', email: '', password: '', profilePhoto: '' };
-		
+
 		if (!inputQuery.displayName) {
 			isValid = false;
 			newErrors.displayName = 'Display name is required';
@@ -120,66 +198,15 @@ const RegistrationScreen: FC<RegistrationScreenProps> = ({ navigation, route }) 
 		setError(newErrors);
 		return isValid;
 	};
-
-	/* const onChangeavatar = () => {
-		launchImageLibrary(
-			{
-				//select only photos
-				mediaType: 'photo',
-				quality: 1, 
-			},
-			(response) => {
-				if (response.assets && response.assets.length > 0) {
-					const uri = response.assets[0].uri;
-					setInputQuery(prev => ({ ...prev, profilePhoto: uri }));
-					Alert.alert("Avatar selected", "You have successfully selected an avatar.");
-				} else {
-					Alert.alert('You will choose an avatar next time'); 
-				}
-			}
-		);
-	}; */
-
-	const onChangeavatar = () => {
-    launchImageLibrary(
-        {
-            mediaType: 'photo',
-            quality: 1,
-        },
-        (response) => {
-            console.log(response); // Check the structure of the response
-            if (response.didCancel) {
-                Alert.alert('You cancelled the image picker');
-                return;
-            }
-
-            if (response.errorCode) {
-                Alert.alert('Error', response.errorMessage || 'An error occurred');
-                return;
-            }
-
-            if (response.assets && response.assets.length > 0) {
-                const uri = response.assets[0].uri;
-                setInputQuery(prev => ({ ...prev, profilePhoto: uri }));
-                Alert.alert("Avatar selected", "You have successfully selected an avatar.");
-            } else {
-                Alert.alert('No avatar selected');
-            }
-        }
-    );
-};
-
+	
 	const onRegistation = () => {
 		Keyboard.dismiss();
 
 		if (!validate()) return;
 
 		if (validate()) {
-			//!Delete console.log
-			console.log("Credentials", inputQuery.displayName, inputQuery.email, inputQuery.password, inputQuery.profilePhoto);
-
 			registerDB({
-				profilePhoto: inputQuery.profilePhoto !== undefined ? inputQuery.profilePhoto : '',
+				profilePhoto: selectedImage || '',
 				displayName: inputQuery.displayName,
 				email: inputQuery.email,
 				password: inputQuery.password
@@ -204,6 +231,7 @@ const RegistrationScreen: FC<RegistrationScreenProps> = ({ navigation, route }) 
 					source={require('../../../assets/images/background/background-photo.jpg')}
 					style={styles.background_image}
 				/>
+				
 				<KeyboardAvoidingView
 					behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
 					style={styles.container}
@@ -211,13 +239,36 @@ const RegistrationScreen: FC<RegistrationScreenProps> = ({ navigation, route }) 
 					<View
 						style={{
 							...styles.formContainer,
-							paddingBottom: isFocused ? 32 : 92,
+							paddingBottom: isKeyboardVisible ? 32 : 92,
 						}}
 					>
-						<View style={styles.avatar}>
-							<TouchableOpacity style={styles.buttonAvatar} onPress={onChangeavatar}>
-								<Text style={styles.buttonAvatarText}>{'+'}</Text>
-							</TouchableOpacity>
+						{isUploading && <ActivityIndicator size="large" color={colors.orange} />}
+
+						<View style={styles.avatarContainer}>
+							{selectedImage ? (
+								<View>
+									<Image
+										source={{ uri: selectedImage }}
+										style={styles.image}
+									/>
+									<TouchableOpacity style={styles.buttonSelectedAvatar} onPress={pickImage}>
+										<Text style={styles.buttonAvatarText}>{'+'}</Text>
+									</TouchableOpacity>
+								</View>
+							) : (
+								<View
+									style={styles.avatar}
+								>
+									<TouchableOpacity
+										style={styles.buttonAvatar}
+										onPress={pickImage}
+										accessibilityLabel="Select Profile Picture"
+										accessibilityHint="Opens your photo library to select a profile picture."
+									>
+										<Text style={styles.buttonAvatarText}>{'+'}</Text>
+									</TouchableOpacity>
+								</View>
+							)}
 						</View>
 
 						<View style={[styles.formContainer, { width: SCREEN_WIDTH }]}>

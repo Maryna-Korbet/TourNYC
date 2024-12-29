@@ -12,8 +12,8 @@ import { addUser, getUser, updateUserInFirestore } from './firestore';
 
 // Types for registration and authorization
 interface AuthCredentials {
-    profilePhoto: string;
-    displayName: string;
+    profilePhoto?: string;
+    displayName?: string;
     email: string;
     password: string;
 };
@@ -26,7 +26,7 @@ export const registerDB = async ({ email, password, displayName, profilePhoto }:
 
         await updateProfile(user, { displayName, photoURL: profilePhoto });
 
-        await addUser(user.uid, { uid: user.uid, email: user.email || '', displayName: user.displayName || '', profilePhoto: user.photoURL || "" });
+        await addUser(user.uid, { uid: user.uid, email: user.email || '', displayName: user.displayName || '', profilePhoto: user.photoURL || '' });
     } catch (error) {
         console.log('SIGNUP ERROR:', error)
     };
@@ -42,7 +42,7 @@ export const loginDB = async ({ email, password }: AuthCredentials, dispatch: Ap
             uid: user.uid,
             email: user?.email || '',
             displayName: user?.displayName || '',
-            profilePhoto: user?.photoURL || "",
+            profilePhoto: user?.photoURL || '',
         }));
         return user;
     } catch (error) {

@@ -22,9 +22,7 @@ const StackNavigator = () => {
     const user = useSelector((state: RootState) => state.auth.userInfo);
     
     return (
-        <Stack.Navigator
-        /* initialRouteName="Login" */
-        >
+        <Stack.Navigator>
             {!user ? (
                 //if user is not logged in go to Login
                 <>

@@ -52,17 +52,17 @@ export const getUser = async (userId: string) => {
 export const updateUserInFirestore = async (uid: string, data: any) => {
     try {
         // merge: true -to update an existing document or create a new one
-        await setDoc(doc(db, 'users', uid), data, { merge: true }); 
+        await setDoc(doc(db, 'users', uid), data, { merge: true });
         console.log('User data updated to Firestore:', uid);
     } catch (error) {
         console.error('Error saving user data to Firestore:', error);
     }
 };
 
-// Image upload function 
+// Image upload function
 export const uploadImage = async (
     userId: string,
-    file: Blob,
+    file: File | Blob,
     fileName: string,
 ) => {
     try {
@@ -77,7 +77,6 @@ export const uploadImage = async (
         throw error;
     }
 };
-
 
 // A function to get the URL of the uploaded image
 export const getImageUrl = async (imageRef: any) => {
